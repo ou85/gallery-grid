@@ -131,7 +131,7 @@ __________________________________________________*/
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 190px;
+  /* height: 190px; */
 }
 
 @keyframes slide-in {
@@ -158,11 +158,9 @@ form {
 .top-banner form input {
   background: var(--bg_main);
   color:antiquewhite;
-  /* border-radius: 3px; */
   width: 120px;
   height: 25px;
   font-size: 0.8rem;
-  /* border: 0px solid; */
   border: none;
   outline: none; 
 }
