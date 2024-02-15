@@ -13,7 +13,6 @@
 body {
   background: var(--bg_main);
   font-family: "Titillium Web", sans-serif;
-  /* font: 1rem/1.3 "Roboto", sans-serif; */
 }
 
 a {
@@ -21,7 +20,6 @@ a {
   text-decoration: none;
 }
 a:hover {
-  /* border-top: 0.2rem solid #55c49f; */
   border: 0 solid var(--bg_main);
 }
 
@@ -33,7 +31,9 @@ a:visited {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 95vh; /* Set the height of the container to full viewport height */
+  height: 95vh; 
+  overflow-y: auto;
+  
 }
 
 /* clock ================================ */
@@ -46,14 +46,15 @@ a:visited {
   }
 }
 
-
 .clockpage {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
   margin: auto;
   max-width: 500px;
   min-width: 100px;
-  min-height: 87px;
+  height: 10vh;
   text-align: center;
-  /* font-family: "Titillium Web", sans-serif; */
   font-size: 2rem; /* 3rem */
   padding: 0.2rem; /*1rem; */
   font-weight: bold;
@@ -61,10 +62,12 @@ a:visited {
   margin-bottom: 1rem; /* 2rem */
   animation: slide-in-top 1s forwards;
 }
+
 #dayOfWeek {
   display: block;
   font-weight: normal;
   font-size: 1.1rem; /* 1.6rem */
+  margin-bottom: 0.5rem;
 }
 
 @keyframes fade-in {
@@ -114,7 +117,6 @@ a:visited {
 }
 
 
-
 /* WEATHER 
 __________________________________________________*/
 
@@ -131,7 +133,7 @@ __________________________________________________*/
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* height: 190px; */
+  height: 10vh;
 }
 
 @keyframes slide-in {
