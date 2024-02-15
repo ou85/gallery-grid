@@ -1,13 +1,6 @@
 //
 // TODO: 
-//      - Refresh every 30 minutes - DONE
-//      - Add a default city - DONE
-//      - Dim a search button when the input is empty ?
-//      - Input field has only underlined border - DONE
-//      - Add a loading spinner ?
-//      - Add a cookie to remember the last city - DONE
 //      - Hide / Show weather widget.
-//
 //
 // ======  Setting constants ========
 //

@@ -184,10 +184,10 @@ form {
   /* transition: background 0.3s ease-in-out; */
 }
 
-.top-banner form button:hover {
+/* .top-banner form button:hover {
   border-color: var(--clock);
   border-width: 3px;
-}
+} */
 
 .top-banner form .msg {
   position: absolute;
@@ -200,8 +200,8 @@ form {
 .search-button {
   background: transparent;
   color: inherit;
-  /* border: none; */
-  border-color: var(--bg_main);
+  border: none;
+  /* border-color: var(--bg_main); */
   height: 40px;
   width: 40px;
   border-radius: 20px;
@@ -209,6 +209,10 @@ form {
   font: inherit;
   cursor: pointer;
   outline: inherit;
+}
+
+.search-button:hover {
+  border: 3px solid var(--clock);
 }
 
 /* SECTION #2
@@ -240,11 +244,11 @@ form {
   animation: slide-in-left 1s forwards;
 }
 
-
 .ajax-section figcaption {
-  margin-top: 5px;
+  margin-top: 10px;
+  padding-left: 15px;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.02em;
 }
 
 .ajax-section .city-temp {
