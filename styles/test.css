@@ -11,7 +11,6 @@
 }
 
 body {
-  /* border:1px solid #2f6d58; */
   background: var(--bg_main);
   font-family: "Titillium Web", sans-serif;
 }
@@ -29,11 +28,10 @@ a:visited {
 }
 
 .container {
-  /* border:1px solid var(--bg_orange); */
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; 
+  height: 95vh; 
   overflow-y: auto;
   
 }
@@ -49,7 +47,6 @@ a:visited {
 }
 
 .clockpage {
-  /* border:1px solid #2f6d58; */
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -58,20 +55,19 @@ a:visited {
   min-width: 100px;
   height: 10vh;
   text-align: center;
-  font-size: 32px; 
-  padding: 5; 
+  font-size: 2rem; /* 3rem */
+  padding: 0.2rem; /*1rem; */
   font-weight: bold;
-  border-bottom: 8 solid #55c49f;
-  margin-bottom: 16; 
+  border-bottom: 0.2rem solid #55c49f;
+  margin-bottom: 1rem; /* 2rem */
   animation: slide-in-top 1s forwards;
 }
 
 #dayOfWeek {
-  /* border:1px solid #2f6d58; */
   display: block;
   font-weight: normal;
-  font-size: 16px;
-  margin-bottom: 8;
+  font-size: 1.1rem; /* 1.6rem */
+  margin-bottom: 0.5rem;
 }
 
 @keyframes fade-in {
@@ -88,7 +84,6 @@ a:visited {
 }
 
 #photo-grid {
-  /* border:1px solid #2f6d58; */
   animation: fade-in 1s forwards;
   display: grid;
   grid-template-columns: repeat(3, 300px);
@@ -125,11 +120,15 @@ a:visited {
 /* WEATHER 
 __________________________________________________*/
 
+.wcontainer {
+  padding: 0 5px;
+}
+
+
 /* SECTION #1
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
-.bottom-banner {
-  /* border:1px solid #2f6d58; */
+.top-banner {
   color: var(--text_light);
   display: flex;
   justify-content: space-between;
@@ -152,45 +151,45 @@ form {
   align-items: center;
 }
 
-.bottom-banner form {
+.top-banner form {
   position: relative;
   display: flex;
   align-items: center;
 }
 
-.bottom-banner form input {
+.top-banner form input {
   background: var(--bg_main);
   color:antiquewhite;
   width: 120px;
   height: 25px;
-  font-size: 14px;
+  font-size: 0.8rem;
   border: none;
   outline: none; 
 }
 
-.bottom-banner form input:focus {
+.top-banner form input:focus {
   border: none;
   outline: none; 
   border-bottom: 2px solid var(--clock); /* Add bottom border when input is focused */
 }
 
-.bottom-banner form input::placeholder {
+.top-banner form input::placeholder {
   color: currentColor; 
 }
 
-.bottom-banner form button {
+.top-banner form button {
   padding: 3px 3px;
   margin-left: 5px;
   background: var(--bg_main);
   /* transition: background 0.3s ease-in-out; */
 }
 
-/* .bottom-banner form button:hover {
+/* .top-banner form button:hover {
   border-color: var(--clock);
   border-width: 3px;
 } */
 
-.bottom-banner form .msg {
+.top-banner form .msg {
   position: absolute;
   bottom: -60px;
   left: 0;
@@ -246,7 +245,6 @@ form {
 }
 
 .ajax-section figcaption {
-  font-size: 14px;
   margin-top: 10px;
   padding-left: 15px;
   text-transform: uppercase;
@@ -254,14 +252,14 @@ form {
 }
 
 .ajax-section .city-temp {
-  font-size: 30px;
+  font-size: 2rem;
   font-weight: bold;
   margin-top: 10px;
   color: var(--text_light);
 }
 
 .ajax-section .city sup {
-  font-size: 14px;
+  font-size: 0.5em;
 }
 
 .ajax-section .city-name sup {
