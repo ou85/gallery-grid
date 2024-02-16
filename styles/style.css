@@ -58,21 +58,28 @@ a:visited {
   font-size: 16px;
   margin-bottom: 8px;
 }
+@keyframes fade-out {
+  0% { opacity: 1; }
+  100% { opacity: 0.1; }
+}
 @keyframes fade-in {
   0% {opacity: 0;}
   100% { opacity: 1; }
+}
+.fade-out {
+  animation: fade-out .3s forwards;
 }
 .fade-in {
   animation: fade-in 1s forwards;
 }
 #photo-grid {
-  animation: fade-in 1s forwards;
   display: grid;
   grid-template-columns: repeat(3, 300px);
   grid-gap: 10px;
   margin-top: 20px;
 }
 #photo-grid img {
+  margin: -2.5px;
   width: 300px;
   height: 200px;
   background-size: cover;

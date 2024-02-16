@@ -8,7 +8,7 @@
 // ======  Setting constants ========
 //
 const amountOfPicures = 205; //_________________________Amount of pictures in folder "Pictures"
-const refresh = 10; //__________________________________Page Refresh rate in seconds
+const refresh = 3; //__________________________________Page Refresh rate in seconds
 const baseUrl = 'pictures'; //__________________________Base URL
 //
 //
@@ -25,6 +25,22 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+// function changeRandomImage() {
+//   const cells = photoGrid.querySelectorAll(".cell");
+//   const randomIndex = getRandomInt(0, cells.length - 1);
+//   const cell = cells[randomIndex];
+//   const image = cell.querySelector("img");
+//   const randomImageIndex = checkDouble(); //getRandomInt(1, amountOfPicures);
+//   const imageUrl = `${baseUrl}/${randomImageIndex}.jpg`;
+
+//   image.classList.remove('fade-in');
+//   image.classList.add('fade-out');
+//   void image.offsetWidth;
+
+//   image.setAttribute("src", imageUrl);
+
+//   image.classList.add('fade-in');
+// }
 function changeRandomImage() {
   const cells = photoGrid.querySelectorAll(".cell");
   const randomIndex = getRandomInt(0, cells.length - 1);
@@ -34,11 +50,14 @@ function changeRandomImage() {
   const imageUrl = `${baseUrl}/${randomImageIndex}.jpg`;
 
   image.classList.remove('fade-in');
-  void image.offsetWidth;
+  image.classList.add('fade-out');
 
-  image.setAttribute("src", imageUrl);
-
-  image.classList.add('fade-in');
+  image.addEventListener('animationend', function handler() {
+    image.removeEventListener('animationend', handler); 
+    image.setAttribute("src", imageUrl);
+    image.classList.remove('fade-out');
+    image.classList.add('fade-in');
+  });
 }
 
 function checkDouble() {
