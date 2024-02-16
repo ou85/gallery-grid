@@ -40,13 +40,20 @@ const refreshRate = refresh*1000;
 
 console.log("Images in rotation: " + amountOfPictures);
 
-const getRandomInt = (min, max) => {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+const getRandomIntExcept = (min, max, except) => {
+  let result;
+  do {
+    result = Math.floor(Math.random() * (max - min + 1)) + min;
+  } while (result === except);
+  return result;
 }
+
+let lastUpdatedIndex = null;
 
 const changeRandomImage = () => {
   const cells = photoGrid.querySelectorAll(".cell");
-  const randomIndex = getRandomInt(0, cells.length - 1);
+  const randomIndex = getRandomIntExcept(0, cells.length - 1, lastUpdatedIndex);
+  lastUpdatedIndex = randomIndex;
   const cell = cells[randomIndex];
   const image = cell.querySelector("img");
   const randomImageIndex = getNextImageIndex();

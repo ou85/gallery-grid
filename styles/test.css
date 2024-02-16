@@ -25,7 +25,7 @@ a:visited {
 }
 .container {
   margin: -5px;
-  border: var(--orange) 1px solid;
+  /* border: var(--orange) 1px solid; */
   border-radius: 10px;
   display: flex;
   justify-content: center;
