@@ -14,28 +14,8 @@ const baseUrl = 'pictures'; //__________________________Base URL
 //
 // ======  Set up photo grid ========
 //
-//------------------------------------------------
-let imageIndexes = Array.from({length: amountOfPicures}, (_, i) => i + 1);
-
-function shuffle(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-}
-
-shuffle(imageIndexes);
-
-function getNextImageIndex() {
-  if (imageIndexes.length === 0) {
-    // If the array is empty, create and shuffle a new array
-    imageIndexes = Array.from({length: amountOfPicures}, (_, i) => i + 1);
-    shuffle(imageIndexes);
-  }
-  return imageIndexes.pop();
-}
-
 const photoGrid = document.getElementById("photo-grid");
+let imageIndexes = [];
 
 const refreshRate = refresh*1000; 
 
@@ -50,7 +30,7 @@ function changeRandomImage() {
   const randomIndex = getRandomInt(0, cells.length - 1);
   const cell = cells[randomIndex];
   const image = cell.querySelector("img");
-  const randomImageIndex = getNextImageIndex();
+  const randomImageIndex = checkDouble(); //getRandomInt(1, amountOfPicures);
   const imageUrl = `${baseUrl}/${randomImageIndex}.jpg`;
 
   image.classList.remove('fade-in');
@@ -61,23 +41,46 @@ function changeRandomImage() {
   image.classList.add('fade-in');
 }
 
-setInterval(changeRandomImage, refreshRate);
+function checkDouble() {
+  let randomImageIndex = getRandomInt(1, amountOfPicures);
 
-function createImageLink(index) {
-  const link = document.createElement("a");
-  const image = document.createElement("img");
-  const imageUrl = `${baseUrl}/${index}.jpg`;
-  image.src = imageUrl;
-  link.href = imageUrl;
-  link.appendChild(image);
-  return link;
+  while (imageIndexes.includes(randomImageIndex)) {
+    randomImageIndex = getRandomInt(1, amountOfPicures);
+  }
+
+  // imageIndexes.includes(randomImageIndex)
+  //   ? console.log("Image is not Unigue: " + randomImageIndex)
+  //   : console.log("Image is Unigue: " + randomImageIndex);
+
+  imageIndexes.push(randomImageIndex);
+  if (imageIndexes.length > 100) {
+    imageIndexes.shift();
+  }
+
+  // console.log("Array length: " + imageIndexes.length);
+  // console.log("Array: " + imageIndexes);
+
+  return imageIndexes[imageIndexes.length - 1];
 }
 
+setInterval(changeRandomImage, refreshRate);
+
+// Load initial images
 for (let i = 1; i < 10; i++) {
   const cell = document.createElement("div");
-  cell.className = "cell";
-  const imageLink = createImageLink(getNextImageIndex());
-  cell.appendChild(imageLink);
+  cell.classList.add("cell");
+
+  const link = document.createElement("a");
+  const image = document.createElement("img");
+  const randomImageIndex = checkDouble();
+  const imageUrl = `${baseUrl}/${randomImageIndex}.jpg`;
+  image.setAttribute("src", imageUrl);
+  link.setAttribute("href", imageUrl);
+  // Random picture link
+  // link.setAttribute("href", "https://picsum.photos/2560/1600");
+
+  link.appendChild(image);
+  cell.appendChild(link);
   photoGrid.appendChild(cell);
 }
 //

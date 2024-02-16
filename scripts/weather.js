@@ -9,9 +9,9 @@ let refreshWeather = 15; //_______________________________________________ Page 
 //
 //
 // ======  Fetching weather data ========
-const form = document.querySelector(".top-banner form");
-const input = document.querySelector(".top-banner input");
-const msg = document.querySelector(".top-banner .msg");
+const form = document.querySelector(".bottom-banner form");
+const input = document.querySelector(".bottom-banner input");
+const msg = document.querySelector(".bottom-banner .msg");
 const list = document.querySelector(".ajax-section .cities");
 const apiKey =  "935dab6fc9876743c9ec8fba2e687c63";
 
