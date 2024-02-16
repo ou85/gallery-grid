@@ -7,17 +7,17 @@
 //
 // ======  Setting constants ========
 //
-const amountOfPicures = 215; //_________________________Amount of pictures in folder "Pictures"
-const refresh = 10; //__________________________________Page Refresh rate in seconds
+const amountOfPictures = 215; //_________________________Amount of pictures in folder "Pictures"
+const refresh = 30; //__________________________________Page Refresh rate in seconds
 const baseUrl = 'pictures'; //__________________________Base URL
 //
 //
 // ======  Set up photo grid ========
 //
 //------------------------------------------------
-let imageIndexes = Array.from({length: amountOfPicures}, (_, i) => i + 1);
+let imageIndexes = Array.from({length: amountOfPictures}, (_, i) => i + 1);
 
-function shuffle(array) {
+const shuffle = array => {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]];
@@ -26,10 +26,10 @@ function shuffle(array) {
 
 shuffle(imageIndexes);
 
-function getNextImageIndex() {
+const getNextImageIndex = () => {
   if (imageIndexes.length === 0) {
     // If the array is empty, create and shuffle a new array
-    imageIndexes = Array.from({length: amountOfPicures}, (_, i) => i + 1);
+    imageIndexes = Array.from({length: amountOfPictures}, (_, i) => i + 1);
     shuffle(imageIndexes);
   }
   return imageIndexes.pop();
@@ -39,13 +39,13 @@ const photoGrid = document.getElementById("photo-grid");
 
 const refreshRate = refresh*1000; 
 
-console.log("Images in rotation: " + amountOfPicures);
+console.log("Images in rotation: " + amountOfPictures);
 
-function getRandomInt(min, max) {
+const getRandomInt = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function changeRandomImage() {
+const changeRandomImage = () => {
   const cells = photoGrid.querySelectorAll(".cell");
   const randomIndex = getRandomInt(0, cells.length - 1);
   const cell = cells[randomIndex];
@@ -53,20 +53,26 @@ function changeRandomImage() {
   const randomImageIndex = getNextImageIndex();
   const imageUrl = `${baseUrl}/${randomImageIndex}.jpg`;
 
-  image.classList.remove('fade-in');
-  image.classList.add('fade-out');
+  // image.classList.remove('fade-in');
+  // image.classList.add('fade-out');
+  setTimeout(() => {
+    image.classList.remove('fade-in');
+    image.classList.add('fade-out');
+  }, 150);
 
   image.addEventListener('animationend', function handler() {
     image.removeEventListener('animationend', handler); 
-    image.setAttribute("src", imageUrl);
-    image.classList.remove('fade-out');
-    image.classList.add('fade-in');
+    setTimeout(() => {
+      image.setAttribute("src", imageUrl);
+      image.classList.remove('fade-out');
+      image.classList.add('fade-in');
+    }, 150); 
   });
 }
 
 setInterval(changeRandomImage, refreshRate);
 
-function createImageLink(index) {
+const createImageLink = index => {
   const link = document.createElement("a");
   const image = document.createElement("img");
   const imageUrl = `${baseUrl}/${index}.jpg`;
@@ -86,7 +92,7 @@ for (let i = 1; i < 10; i++) {
 //
 // ======  Set up clock ========
 //
-function updateClock() {
+const updateClock = () => {
   const clockElement = document.getElementById("clock");
   const day = document.getElementById("dayOfWeek");
   const dayOfWeek = [
@@ -102,9 +108,8 @@ function updateClock() {
   const timeString = now.toLocaleTimeString("en-GB", {
     hour: "2-digit",
     minute: "2-digit",
-    // weekday: "short",
   });
-  let days = now.getDay();
+  const days = now.getDay();
   clockElement.innerText = timeString;
   day.innerHTML = dayOfWeek[days];
 }
