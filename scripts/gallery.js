@@ -54,16 +54,12 @@ const changeRandomImage = () => {
   const imageUrl = `${baseUrl}/${randomImageIndex}.jpg`;
 
   image.classList.remove('fade-in');
-  image.classList.add('fade-out');
+  
+  image.onload = () => {
+    image.classList.add('fade-in');
+  };
 
-  image.addEventListener('animationend', function handler() {
-    image.removeEventListener('animationend', handler); 
-    setTimeout(() => {
-      image.setAttribute("src", imageUrl);
-      image.classList.remove('fade-out');
-      image.classList.add('fade-in');
-    }, 200); 
-  });
+  image.setAttribute("src", imageUrl);
 }
 
 setInterval(changeRandomImage, refreshRate);
