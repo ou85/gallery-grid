@@ -30,7 +30,6 @@ a:visited {
   align-items: center;
   height: 100vh; 
   overflow-y: auto;
-  
 }
 /* clock ================================ */
 @keyframes slide-in-top {
@@ -70,11 +69,11 @@ a:visited {
   animation: fade-out 0.4s ease-in 1 forwards;
 }
 .fade-in {
-  opacity: 0;
-  animation: fadeIn .5s ease-in 1 forwards;
+  opacity: 0.3;
+  animation: fadeIn .7s ease-in 1 forwards;
 }
 #photo-grid {
-  animation: fade-in 2s forwards;
+  animation: fade-in 3s forwards;
   display: grid;
   grid-template-columns: repeat(3, 300px);
   grid-gap: 10px;

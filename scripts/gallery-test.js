@@ -8,13 +8,12 @@
 // ======  Setting constants ========
 //
 const amountOfPictures = 215; //_________________________Amount of pictures in folder "Pictures"
-const refresh = 3; //__________________________________Page Refresh rate in seconds
-const baseUrl = 'pictures'; //__________________________Base URL
+const refresh = 3; //____________________________________Page Refresh rate in seconds
+const baseUrl = 'pictures'; //___________________________Base URL
 //
 //
 // ======  Set up photo grid ========
 //
-//------------------------------------------------
 let imageIndexes = Array.from({length: amountOfPictures}, (_, i) => i + 1);
 
 const shuffle = array => {

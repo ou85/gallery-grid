@@ -14,7 +14,6 @@ const baseUrl = 'pictures'; //__________________________Base URL
 //
 // ======  Set up photo grid ========
 //
-//------------------------------------------------
 let imageIndexes = Array.from({length: amountOfPictures}, (_, i) => i + 1);
 
 const shuffle = array => {
