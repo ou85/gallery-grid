@@ -22,8 +22,8 @@ const getRandomInt = (min, max, except) => {
   } while (result === except);
   return result;
 }
-// Array of 5000 indexes, shuffled
-let imageIndexes = shuffleArray([...Array(5000).keys()]); 
+// Array of 100 indexes, shuffled
+let imageIndexes = shuffleArray([...Array(100).keys()]); 
 let currentImageIndex = 0;
 
 const photoGrid = document.getElementById("photo-grid");
