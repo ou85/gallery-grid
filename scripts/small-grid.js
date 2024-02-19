@@ -1,0 +1,116 @@
+//
+// ======  Setting constants ========
+//
+const refreshRate = 30000; // 30 seconds
+const baseUrl = "https://picsum.photos/200/200";
+//
+//
+// ======  Set up photo grid ========
+//
+const shuffleArray = array => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+const getRandomInt = (min, max, except) => {
+  let result;
+  do {
+    result = Math.floor(Math.random() * (max - min + 1)) + min;
+  } while (result === except);
+  return result;
+}
+// Array of 5000 indexes, shuffled
+let imageIndexes = shuffleArray([...Array(5000).keys()]); 
+let currentImageIndex = 0;
+
+const photoGrid = document.getElementById("photo-grid");
+
+let lastUpdatedIndex = null;
+const changeRandomImage = () => {
+  const cells = photoGrid.querySelectorAll(".cell");
+  const randomIndex = getRandomInt(0, cells.length - 1, lastUpdatedIndex);
+  lastUpdatedIndex = randomIndex;
+  const cell = cells[randomIndex];
+  const image = cell.querySelector("img");
+  const randomImageIndex = getNextImageIndex();
+  const imageUrl = `${baseUrl}?random=${randomImageIndex}`;
+
+  image.classList.remove('fade-in');
+
+  image.onload = () => {
+    image.classList.add('fade-in');
+  };
+
+  image.setAttribute("src", imageUrl);
+}
+
+const createImageLink = index => {
+  const link = document.createElement("a");
+  const image = document.createElement("img");
+  const imageUrl = `${baseUrl}?random=${index}`;
+  link.href = imageUrl;
+  link.appendChild(image);
+
+  image.onload = () => {
+    image.classList.add('fade-in');
+  };
+
+  image.src = imageUrl;
+
+  return link;
+}
+
+const createCell = index => {
+  const cell = document.createElement("div");
+  cell.className = "cell";
+  const imageLink = createImageLink(index);
+  cell.appendChild(imageLink);
+  return cell;
+}
+
+const createGrid = () => {
+  for (let i = 0; i < 12; i++) {
+    const cell = createCell(getNextImageIndex());
+    photoGrid.appendChild(cell);
+  }
+}
+
+const getNextImageIndex = () => {
+  if (currentImageIndex >= imageIndexes.length) {
+    imageIndexes = shuffleArray(imageIndexes); // Reshuffle the array when all images have been shown
+    currentImageIndex = 0;
+  }
+  return imageIndexes[currentImageIndex++];
+}
+
+createGrid();
+setInterval(changeRandomImage, refreshRate);
+
+//
+// ======  Set up clock ========
+//
+const updateClock = () => {
+  const clockElement = document.getElementById("clock");
+  const day = document.getElementById("dayOfWeek");
+  const dayOfWeek = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  const now = new Date();
+  const timeString = now.toLocaleTimeString("en-GB", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  const days = now.getDay();
+  clockElement.innerText = timeString;
+  day.innerHTML = dayOfWeek[days];
+}
+setInterval(updateClock, 1000);

@@ -1,0 +1,226 @@
+:root {
+  --bg_main: #091921;
+  --text_light: #fff;
+  --text_med: #53627c;
+  --text_dark: #1e2432;
+  --red: #ff1e42;
+  --darkred: #c3112d;
+  --orange: #ff8c00;
+  --clock: #55c49f;
+  --clock-darker: #2f6d58;
+}
+body {
+  background: var(--bg_main);
+  font-family: "Titillium Web", sans-serif;
+}
+a {
+  color: var(--text_light); 
+  text-decoration: none;
+}
+a:hover {
+  border: 0 solid var(--bg_main);
+}
+a:visited {
+  color: var(--text_light); 
+}
+.container {
+  margin: -5px;
+  /* border: var(--orange) 1px solid; */
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; 
+  overflow-y: auto;
+  
+}
+/* clock ================================ */
+@keyframes slide-in-top {
+  0% {transform: translateY(-100%); }
+  100% {transform: translateY(0);}
+}
+.clockpage {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  margin: auto;
+  max-width: 500px;
+  min-width: 100px;
+  height: 10vh;
+  text-align: center;
+  font-size: 32px; 
+  padding: 5; 
+  font-weight: bold;
+  border-bottom: 3px solid var(--clock);
+  margin-bottom: 16; 
+  animation: slide-in-top 1s forwards;
+}
+#dayOfWeek {
+  display: block;
+  font-weight: normal;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+@keyframes fade-out {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+.fade-out {
+  animation: fade-out .4s ease-in 1 forwards;
+}
+.fade-in {
+  opacity: 0.3;
+  animation: fadeIn .7s ease-in 1 forwards;
+}
+#photo-grid {
+  animation: fade-in 2s forwards;
+  display: grid;
+  grid-template-columns: repeat(4, 200px);
+  grid-gap: 10px;
+  margin-top: 20px;
+}
+#photo-grid img {
+  margin: -2.5px;
+  width: 200px;
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+}
+@media (max-width: 1200px) {
+  #photo-grid {
+    grid-template-columns: repeat(4, 200px);
+  }
+}
+@media (max-width: 900px) {
+  #photo-grid {
+    grid-template-columns: repeat(3, 200px);
+  }
+}
+@media (max-width: 600px) {
+  #photo-grid {
+    grid-template-columns: repeat(2, 200px);
+  }
+}
+/* WEATHER __________________________________________________*/
+
+.bottom-banner {
+  color: var(--text_light);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 10vh;
+}
+@keyframes slide-in {
+  0% {transform: translateX(100%);}
+  100% {transform: translateX(0); }
+}
+form {
+  animation: slide-in 1s forwards;
+  display: flex;
+  align-items: center;
+}
+.bottom-banner form {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.bottom-banner form input {
+  background: var(--bg_main);
+  color:antiquewhite;
+  width: 120px;
+  height: 25px;
+  font-size: 14px;
+  border: none;
+  outline: none; 
+}
+.bottom-banner form input:focus {
+  border: none;
+  outline: none; 
+  border-bottom: 2px solid var(--clock); 
+}
+.bottom-banner form input::placeholder {
+  color: currentColor; 
+}
+.bottom-banner form button {
+  padding: 3px 3px;
+  margin-left: 5px;
+  background: var(--bg_main);
+}
+.bottom-banner form .msg {
+  position: absolute;
+  bottom: -60px;
+  left: 0;
+  max-width: 100%;
+  min-height: 40px;
+}
+.search-button {
+  background: transparent;
+  color: inherit;
+  border: none;
+  height: 40px;
+  width: 40px;
+  border-radius: 20px;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+}
+.search-button:hover {
+  border: 3px solid var(--clock);
+}
+.ajax-section {
+  margin: 20px 0;
+  min-height: 100px;
+}
+.ajax-section .cities {
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: repeat 1fr;
+}
+@keyframes slide-in-left {
+  0% {transform: translateX(-100%);}
+  100% {transform: translateX(0);}
+}
+.ajax-section .city {
+  padding: 20px 5%;
+  border-radius: 10px;
+  color: var(--text_light);
+  animation: slide-in-left 1s forwards;
+}
+.ajax-section figcaption {
+  font-size: 14px;
+  margin-top: 10px;
+  padding-left: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.ajax-section .city-temp {
+  font-size: 30px;
+  font-weight: bold;
+  margin-top: 10px;
+  color: var(--text_light);
+}
+.ajax-section .city sup {font-size: 14px;}
+.ajax-section .city-name sup {
+  padding: 0.2em 0.5em;
+  border-radius: 50px;
+  color: var(--text_light);
+  background: var(--orange);
+}
+.ajax-section .city-icon {
+  margin-top: 5px;
+  width: 50px;
+  height: 50px;
+}
+.city-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.city-name{font-size: 24px;}
+ul, li { 
+  list-style-type: none;
+}
