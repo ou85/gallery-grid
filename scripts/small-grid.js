@@ -1,8 +1,10 @@
 //
 // ======  Setting constants ========
 //
-const refreshRate = 30000; // 30 seconds
-const baseUrl = "https://picsum.photos/200/200";
+const refreshRate = 15000; // 15 seconds
+const baseUrl = "https://picsum.photos/300/200";
+const arrayLength = 50; // Number of images to cycle through
+const gridLength = 12; // Number of images to show in grid
 //
 //
 // ======  Set up photo grid ========
@@ -22,9 +24,12 @@ const getRandomInt = (min, max, except) => {
   } while (result === except);
   return result;
 }
-// Array of 100 indexes, shuffled
-let imageIndexes = shuffleArray([...Array(100).keys()]); 
+// Array of `arrayLength` indexes, shuffled
+let imageIndexes = shuffleArray([...Array(arrayLength).keys()]); 
 let currentImageIndex = 0;
+
+console.log("Images in array: " + imageIndexes.length);
+console.log("Array: " + imageIndexes);
 
 const photoGrid = document.getElementById("photo-grid");
 
@@ -72,7 +77,7 @@ const createCell = index => {
 }
 
 const createGrid = () => {
-  for (let i = 0; i < 12; i++) {
+  for (let i = 0; i < gridLength; i++) {
     const cell = createCell(getNextImageIndex());
     photoGrid.appendChild(cell);
   }
