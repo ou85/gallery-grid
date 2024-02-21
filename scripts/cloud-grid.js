@@ -1,7 +1,7 @@
 const gridSize = 12;
 const picBuffer = 30;
 const indexBuffer = 3;
-const refreshRate = 5 * 1000; 
+const refreshRate = 30 * 1000; 
 const photoGrid = document.getElementById("photo-grid");
 const cloudUrl = "https://res.cloudinary.com/dacsww4tg/image/upload/c_scale,w_300/q_auto:best";
 
@@ -41,7 +41,7 @@ const createImageLink = imageUrl => {
     };
 
     image.classList.add('fade-in');
-    
+
     const cleanedImageUrl = imageUrl.replace("/c_scale,w_300/q_auto:best", "");
     image.src = imageUrl;
     link.href = cleanedImageUrl;
