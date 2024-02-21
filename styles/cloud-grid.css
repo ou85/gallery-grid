@@ -58,12 +58,22 @@ a:visited {
   font-size: 16px;
   margin-bottom: 8px;
 }
-@keyframes fadeIn {
+/* @keyframes fade-in {
   to { opacity: 1; }
+} */
+@keyframes fade-in {
+  0% {
+    opacity: 0.1;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 .fade-in {
-  opacity: 0.3;
-  animation: fadeIn .7s ease-in 1 forwards;
+  /* opacity: 0.1; */
+  animation: fade-in 1s ease-in 1 forwards;
 }
 #photo-grid {
   animation: fade-in 3s forwards;
