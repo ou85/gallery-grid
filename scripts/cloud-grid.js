@@ -2,7 +2,7 @@ const preload = 15;
 const gridSize = 12;
 const picBuffer = 30;
 const indexBuffer = 3;
-const refreshRate = 30 * 1000; 
+const refreshRate = 3 * 1000; 
 const preloadThreshold = preload - 5;
 const photoGrid = document.getElementById("photo-grid");
 const cloudUrl = "https://res.cloudinary.com/dacsww4tg/image/upload/c_scale,w_300/q_auto:best";
@@ -55,8 +55,7 @@ const createImageLink = imageUrl => {
     image.src = imageUrl;
     link.href = cleanedImageUrl;
     link.appendChild(image);
-    console.log('imageURL...' + imageUrl);
-    console.log('cleanURL...' + cleanedImageUrl);
+
     return link;
 }
 
@@ -64,6 +63,7 @@ const createImageLink = imageUrl => {
 const createPhotoGrid = async () => {
     try {
         const paths = await fetchImagePaths();
+        console.log(`Number of links: ${paths.length}`);
         const imageUrls = paths.map(path => path.trim() !== "" ? `${cloudUrl}${path}` : "/pictures/1.jpg");
         const getRandomUrl = createUniqueRandomGenerator(imageUrls, picBuffer);
         const getRandomIndex = createUniqueRandomGenerator([...Array(gridSize).keys()], indexBuffer);
@@ -83,6 +83,7 @@ const createPhotoGrid = async () => {
 
             image.classList.remove('fade-in');
             image.src = getRandomUrl();
+            console.log(`Image src: ${image.src.replace("/c_scale,w_300/q_auto:best", "")}`);
 
             // Add a slight delay before re-adding the fade-in class to restart the animation
             setTimeout(() => {
