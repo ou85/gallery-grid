@@ -1,140 +1,91 @@
-//
-//
-//     Note:  Images links are in json file "pictures.json" 
-//            located in the "pictures" folder.,
-//            
-//
-//
-//
-// ======  Setting constants ========
-//
-const refresh = 30; //__________________________________Page Refresh rate in seconds
-const cloudUrl = "https://res.cloudinary.com/dacsww4tg/image/upload";
-//
-//
-// ======  Set up photo grid ========
-//
-fetch('pictures/pictures.json')
-  .then(response => {
+const gridSize = 12;
+const picBuffer = 30;
+const indexBuffer = 3;
+const refreshRate = 5 * 1000; 
+const photoGrid = document.getElementById("photo-grid");
+const cloudUrl = "https://res.cloudinary.com/dacsww4tg/image/upload/c_scale,w_300/q_auto:best";
+
+// Fetches image paths from a JSON file
+const fetchImagePaths = async () => {
+    const response = await fetch('pictures/pictures.json');
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(`HTTP error! status: ${response.status}`);
     }
     return response.json();
-  })
-  .then(paths => {
-    // let imageUrls = paths.map(path => `${cloudUrl}${path}`);
-
-    let imageUrls = paths.map(path => {
-      if (path.trim() !== "") {
-        return `${cloudUrl}${path}`;
-      } else {
-        return "/v1683698616/wallpapers/1214775_z3msnp.jpg";
-      }
-    });
-    
-    console.log(`There are ${imageUrls.length} images in the JSON file.`)
-    console.log(`There Array: ${imageUrls}`)
-
-    let lastUsedUrls = [];
-
-    const getRandomURL = () => {
-      let randomUrl;
-      do {
-        const randomIndex = Math.floor(Math.random() * imageUrls.length);
-        randomUrl = imageUrls[randomIndex];
-      } while (lastUsedUrls.includes(randomUrl));
-
-      lastUsedUrls.push(randomUrl);
-
-      // If the list of last used URLs is longer than picBuffer, remove the oldest URL
-      let picBuffer = 30;
-      if (lastUsedUrls.length > picBuffer) {
-        lastUsedUrls.shift();
-      }
-
-      return randomUrl;
-    }
-
-    console.log("Random Image URL:" + getRandomURL());
-
-    const photoGrid = document.getElementById("photo-grid");
-
-    const refreshRate = refresh*1000; 
-    const getRandomIntExcept = (min, max, except) => {
-      let result;
-      do {
-        result = Math.floor(Math.random() * (max - min + 1)) + min;
-      } while (result === except);
-      return result;
-    }
-
-    let lastUpdatedIndex = null;
-
-    const changeRandomImage = () => {
-      const cells = photoGrid.querySelectorAll(".cell");
-      const randomIndex = getRandomIntExcept(0, cells.length - 1, lastUpdatedIndex);
-      const cell = cells[randomIndex];
-      const image = cell.querySelector("img");
-      const imageUrl = getRandomURL();
-    
-      image.classList.remove('fade-in');
-      
-      image.onload = () => {
-        image.classList.add('fade-in');
-      };
-    
-      image.setAttribute("src", imageUrl);
-    }
-    setInterval(changeRandomImage, refreshRate);
-
-    const createImageLink = index => {
-      const link = document.createElement("a");
-      const image = document.createElement("img");
-      const imageUrl = getRandomURL();
-      image.src = imageUrl;
-      link.href = imageUrl;
-      link.appendChild(image);
-      return link;
-    }
-   
-    let gridSize = 10;
-    for (let i = 1; i < gridSize; i++) {
-      const cell = document.createElement("div");
-      cell.className = "cell";
-      const imageLink = createImageLink(getRandomURL());
-      cell.appendChild(imageLink);
-      photoGrid.appendChild(cell);
-    }
-
-  })
-  .catch(error => {
-    console.log('Fetch failed:', error);
-    const errorMessageDiv = document.getElementById('error-message');
-    errorMessageDiv.textContent = 'Oops! It is a ghost town here. Please try again later.';
-  });
-
-//
-// ======  Set up clock ========
-//
-const updateClock = () => {
-  const clockElement = document.getElementById("clock");
-  const day = document.getElementById("dayOfWeek");
-  const dayOfWeek = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
-  const now = new Date();
-  const timeString = now.toLocaleTimeString("en-GB", {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-  const days = now.getDay();
-  clockElement.innerText = timeString;
-  day.innerHTML = dayOfWeek[days];
 }
-setInterval(updateClock, 1000);
+
+// Creates a generator for unique random values from an array
+const createUniqueRandomGenerator = (array, buffer) => {
+    let lastUsed = [];
+    return () => {
+        let result;
+        do {
+            const randomIndex = Math.floor(Math.random() * array.length);
+            result = array[randomIndex];
+        } while (lastUsed.includes(result));
+        lastUsed.push(result);
+        if (lastUsed.length > buffer) {
+            lastUsed.shift();
+        }
+        return result;
+    }
+}
+
+// Creates a new link element with an image child element
+const createImageLink = imageUrl => {
+    const link = document.createElement("a");
+    const image = document.createElement("img");
+    image.onerror = () => {
+        console.log("Image not found, using default image");
+        image.src = '/pictures/2.jpg'; 
+    };
+
+    image.classList.add('fade-in');
+    
+    const cleanedImageUrl = imageUrl.replace("/c_scale,w_300/q_auto:best", "");
+    image.src = imageUrl;
+    link.href = cleanedImageUrl;
+    link.appendChild(image);
+    console.log('imageURL...' + imageUrl);
+    console.log('cleanURL...' + cleanedImageUrl);
+    return link;
+}
+
+// Creates a photo grid with a fade-in effect for each image
+const createPhotoGrid = async () => {
+    try {
+        const paths = await fetchImagePaths();
+        const imageUrls = paths.map(path => path.trim() !== "" ? `${cloudUrl}${path}` : "/pictures/1.jpg");
+        const getRandomUrl = createUniqueRandomGenerator(imageUrls, picBuffer);
+        const getRandomIndex = createUniqueRandomGenerator([...Array(gridSize).keys()], indexBuffer);
+
+        for (let i = 1; i <= gridSize; i++) {
+            const cell = document.createElement("div");
+            cell.className = "cell";
+            const imageLink = createImageLink(getRandomUrl());
+            cell.appendChild(imageLink);
+            photoGrid.appendChild(cell);
+        }
+
+        setInterval(() => {
+            const cells = photoGrid.querySelectorAll(".cell");
+            const cell = cells[getRandomIndex()];
+            const image = cell.querySelector("img");
+
+            image.classList.remove('fade-in');
+            image.src = getRandomUrl();
+
+            // Add a slight delay before re-adding the fade-in class to restart the animation
+            setTimeout(() => {
+                image.classList.add('fade-in');
+            }, 10);
+        }, refreshRate);
+
+    } catch (error) {
+        console.log('Fetch failed:', error);
+        const errorMessageDiv = document.getElementById('error-message');
+        errorMessageDiv.textContent = 'Oops! It is a ghost town here. Please try again later.';
+    }
+}
+
+createPhotoGrid();
