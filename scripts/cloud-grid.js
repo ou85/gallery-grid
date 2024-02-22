@@ -5,7 +5,8 @@ const indexBuffer = 3;
 const refreshRate = 30 * 1000; 
 const preloadThreshold = preload - 5;
 const photoGrid = document.getElementById("photo-grid");
-const cloudUrl = "https://res.cloudinary.com/dacsww4tg/image/upload/c_scale,w_300/q_auto:best";
+// const cloudUrl = "https://res.cloudinary.com/dacsww4tg/image/upload/c_scale,w_300/q_auto:best";
+const cloudUrl = "https://res.cloudinary.com/dacsww4tg/image/upload/c_scale,w_300/q_95";
 
 // Fetches image paths from a JSON file
 const fetchImagePaths = async () => {
