@@ -2,11 +2,12 @@ const preload = 15;
 const gridSize = 12;
 const picBuffer = 30;
 const indexBuffer = 3;
-const refreshRate = 30 * 1000; 
+const refreshRate = 60 * 1000; 
 const preloadThreshold = preload - 5;
 const photoGrid = document.getElementById("photo-grid");
 // const cloudUrl = "https://res.cloudinary.com/dacsww4tg/image/upload/c_scale,w_300/q_auto:best";
-const cloudUrl = "https://res.cloudinary.com/dacsww4tg/image/upload/c_scale,w_300/q_95";
+// const cloudUrl = "https://res.cloudinary.com/dacsww4tg/image/upload/c_scale,w_300/q_95";
+const cloudUrl = "https://res.cloudinary.com/dacsww4tg/image/upload/c_scale,w_300";
 
 // Fetches image paths from a JSON file
 const fetchImagePaths = async () => {
