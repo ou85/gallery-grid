@@ -7,7 +7,7 @@
 //
 // ======  Setting constants ========
 //
-const amountOfPictures = 215; //________________________Amount of pictures in folder "Pictures"
+const amountOfPictures = 260; //________________________Amount of pictures in folder "Pictures"
 const refresh = 30; //__________________________________Page Refresh rate in seconds
 const baseUrl = 'pictures'; //__________________________Base URL
 //
