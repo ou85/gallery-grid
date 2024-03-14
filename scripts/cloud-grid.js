@@ -11,7 +11,7 @@ const cloudUrl = "https://res.cloudinary.com/dacsww4tg/image/upload/c_scale,w_30
 
 // Fetches image paths from a JSON file
 const fetchImagePaths = async () => {
-    const response = await fetch('pictures/pictures.json');
+    const response = await fetch('pictures.json');
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -53,7 +53,8 @@ const createImageLink = imageUrl => {
 
     image.classList.add('fade-in');
 
-    const cleanedImageUrl = imageUrl.replace("/c_scale,w_300/q_auto:best", "");
+    // const cleanedImageUrl = imageUrl.replace("/c_scale,w_300/q_auto:best", "");
+    const cleanedImageUrl = imageUrl.replace("/c_scale,w_300", "");
     image.src = imageUrl;
     link.href = cleanedImageUrl;
     link.appendChild(image);
@@ -85,7 +86,8 @@ const createPhotoGrid = async () => {
 
             image.classList.remove('fade-in');
             image.src = getRandomUrl();
-            console.log(`Image src: ${image.src.replace("/c_scale,w_300/q_auto:best", "")}`);
+            // console.log(`Image src: ${image.src.replace("/c_scale,w_300/q_auto:best", "")}`);
+            console.log(`Image src: ${image.src.replace("/c_scale,w_300", "")}`);
 
             // Add a slight delay before re-adding the fade-in class to restart the animation
             setTimeout(() => {
