@@ -1,6 +1,7 @@
 # Gallery Grid
 
 This is a simple gallery grid project that displays a collection of images in a grid layout.
+Deployed on Vercel. [Example](https://gallery-grid-theta.vercel.app/index.html)
 
 ## Features
 
@@ -10,8 +11,17 @@ This is a simple gallery grid project that displays a collection of images in a 
 
 ## Installation
 
-1. Clone the repository: `git clone https://github.com/your-username/gallery-grid.git`
-2. Navigate to the project directory: `cd gallery-grid`
+1. Clone the repository:
+
+    ```sh
+    git clone https://github.com/your-username/gallery-grid.git
+    ```
+
+2. Navigate to the project directory:
+
+    ```sh
+    cd gallery-grid
+    ```
 
 ## Usage
 
