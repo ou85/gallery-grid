@@ -58,7 +58,6 @@ a:visited {
   margin-bottom: 16; 
   animation: slide-in-top 1s forwards;
 }
-
 #photo-grid {
   animation: fade-in 3s forwards;
   display: grid;
