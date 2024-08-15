@@ -1,0 +1,97 @@
+:root {
+  --bg_main: #091921;
+  --text_light: #fff;
+  --text_med: #53627c;
+  --text_dark: #1e2432;
+  --red: #ff1e42;
+  --darkred: #c3112d;
+  --orange: #ff8c00;
+  --clock: #55c49f;
+  --clock-darker: #2f6d58;
+}
+body {
+  background: var(--bg_main);
+  font-family: "Titillium Web", sans-serif;
+}
+a {
+  color: var(--text_light); 
+  text-decoration: none;
+}
+p {
+  color: var(--text_light); 
+  font-size: 1.2rem;
+}
+h3 {
+  display: flex;
+  justify-content: center;
+  color: var(--text_light); 
+  font-size: 1.3rem;
+}
+a:hover {
+  border: 0 solid var(--bg_main);
+}
+a:visited {
+  color: var(--text_light); 
+}
+.container {
+  margin: -5px;
+  display: flex;
+  justify-content: center;
+  align-items: top;
+  height: 100vh; 
+  overflow-y: auto;
+  margin-bottom: 2rem;
+}
+.clockpage {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  margin: auto;
+  max-width: 500px;
+  min-width: 100px;
+  height: 10vh;
+  text-align: center;
+  font-size: 32px; 
+  padding: 5; 
+  font-weight: bold;
+  border-bottom: 3px solid var(--clock);
+  margin-bottom: 16; 
+  animation: slide-in-top 1s forwards;
+}
+
+#photo-grid {
+  animation: fade-in 3s forwards;
+  display: grid;
+  grid-template-columns: repeat(4, 200px);
+  grid-gap: 10px;
+  margin-top: 20px;
+}
+#photo-grid img {
+  margin: -2.5px;
+  width: 200px;
+  height: 133px;
+  background-size: cover;
+  background-position: center;
+}
+@media (max-width: 1200px) {
+  #photo-grid {
+    grid-template-columns: repeat(3, 200px);
+  }
+}
+@media (max-width: 900px) {
+  #photo-grid {
+    grid-template-columns: repeat(2, 200px);
+  }
+}
+@media (max-width: 600px) {
+  #photo-grid {
+    grid-template-columns: 200px;
+  }
+}
+
+
+
+
+
+
+
