@@ -1,8 +1,4 @@
-const preload = 15;
 const picBuffer = 30;
-const indexBuffer = 3;
-const refreshRate = 60 * 1000; 
-const preloadThreshold = preload - 5;
 const photoGrid = document.getElementById("photo-grid");
 const cloudUrl = "https://res.cloudinary.com/dacsww4tg/image/upload/c_scale,w_300";
 
@@ -63,6 +59,7 @@ const createPhotoGrid = async () => {
     try {
         const paths = await fetchImagePaths();
         console.log(`Number of links: ${paths.length}`);
+        console.log(`Check them all at https://gallery-grid-theta.vercel.app/pages/test.html`);
         const imageUrls = paths.map(path => path.trim() !== "" ? `${cloudUrl}${path}` : "/pictures/1.jpg");
         const getRandomUrl = createUniqueRandomGenerator(imageUrls, picBuffer);
 
