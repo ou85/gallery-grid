@@ -1,4 +1,3 @@
-const picBuffer = 30;
 const photoGrid = document.getElementById("photo-grid");
 const cloudUrl = "https://res.cloudinary.com/dacsww4tg/image/upload/c_scale,w_300";
 
@@ -11,30 +10,6 @@ const fetchImagePaths = async () => {
     return response.json();
 }
 
-// Creates a generator for unique random values from an array
-const createUniqueRandomGenerator = (array, buffer) => {
-    let lastUsedValues = []; 
-    let lastUsedSet = new Set(); 
-
-    return () => {
-        let result;
-        do {
-            const randomIndex = Math.floor(Math.random() * array.length);
-            result = array[randomIndex];
-        } while (lastUsedSet.has(result)); 
-
-        lastUsedValues.push(result);
-        lastUsedSet.add(result); 
-
-        if (lastUsedValues.length > buffer) { 
-            const firstItem = lastUsedValues.shift(); 
-            lastUsedSet.delete(firstItem); 
-        }
-
-        return result;
-    }
-}
-
 // Creates a new link element with an image child element
 const createImageLink = imageUrl => {
     const link = document.createElement("a");
@@ -45,7 +20,6 @@ const createImageLink = imageUrl => {
     };
 
     image.classList.add('fade-in');
-
     const cleanedImageUrl = imageUrl.replace("/c_scale,w_300", "");
     image.src = imageUrl;
     link.href = cleanedImageUrl;
@@ -61,15 +35,14 @@ const createPhotoGrid = async () => {
         console.log(`Number of links: ${paths.length}`);
         console.log(`Check them all at https://gallery-grid-theta.vercel.app/pages/test.html`);
         const imageUrls = paths.map(path => path.trim() !== "" ? `${cloudUrl}${path}` : "/pictures/1.jpg");
-        const getRandomUrl = createUniqueRandomGenerator(imageUrls, picBuffer);
 
-        for (let i = 1; i <= paths.length; i++) {
+        imageUrls.forEach(url => {
             const cell = document.createElement("div");
             cell.className = "cell";
-            const imageLink = createImageLink(getRandomUrl());
+            const imageLink = createImageLink(url);
             cell.appendChild(imageLink);
             photoGrid.appendChild(cell);
-        }
+        });
 
         document.getElementById("info").innerHTML = `Total number of pictures: ${paths.length}`;
 

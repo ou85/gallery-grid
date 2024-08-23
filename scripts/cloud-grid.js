@@ -1,12 +1,9 @@
-const preload = 15;
-const gridSize = 12;
-const picBuffer = 30;
-const indexBuffer = 3;
-const refreshRate = 60 * 1000; 
-const preloadThreshold = preload - 5;
+const preload = 15;              // Number of images to preload
+const gridSize = 12;             // Number of images in the grid
+const picBuffer = 50;            // Buffer for random image generator
+const indexBuffer = 4;           // Buffer for random index generator
+const refreshRate = 30 * 1000;   // Refresh rate in milliseconds
 const photoGrid = document.getElementById("photo-grid");
-// const cloudUrl = "https://res.cloudinary.com/dacsww4tg/image/upload/c_scale,w_300/q_auto:best";
-// const cloudUrl = "https://res.cloudinary.com/dacsww4tg/image/upload/c_scale,w_300/q_95";
 const cloudUrl = "https://res.cloudinary.com/dacsww4tg/image/upload/c_scale,w_300";
 
 // Fetches image paths from a JSON file
@@ -53,7 +50,6 @@ const createImageLink = imageUrl => {
 
     image.classList.add('fade-in');
 
-    // const cleanedImageUrl = imageUrl.replace("/c_scale,w_300/q_auto:best", "");
     const cleanedImageUrl = imageUrl.replace("/c_scale,w_300", "");
     image.src = imageUrl;
     link.href = cleanedImageUrl;
@@ -86,13 +82,12 @@ const createPhotoGrid = async () => {
 
             image.classList.remove('fade-in');
             image.src = getRandomUrl();
-            // console.log(`Image src: ${image.src.replace("/c_scale,w_300/q_auto:best", "")}`);
             console.log(`Image src: ${image.src.replace("/c_scale,w_300", "")}`);
 
             // Add a slight delay before re-adding the fade-in class to restart the animation
             setTimeout(() => {
                 image.classList.add('fade-in');
-            }, 10);
+            }, 20);
         }, refreshRate);
 
     } catch (error) {
