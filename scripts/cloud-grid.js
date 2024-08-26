@@ -63,6 +63,7 @@ const createPhotoGrid = async () => {
     try {
         const paths = await fetchImagePaths();
         console.log(`Number of links: ${paths.length}`);
+        console.log(`Check them all at https://gallery-grid-theta.vercel.app/pages/list.html`);
         const imageUrls = paths.map(path => path.trim() !== "" ? `${cloudUrl}${path}` : "/pictures/1.jpg");
         const getRandomUrl = createUniqueRandomGenerator(imageUrls, picBuffer);
         const getRandomIndex = createUniqueRandomGenerator([...Array(gridSize).keys()], indexBuffer);
