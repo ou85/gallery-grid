@@ -6,13 +6,47 @@ const refreshRate = 30 * 1000;   // Refresh rate in milliseconds
 const photoGrid = document.getElementById("photo-grid");
 const cloudUrl = "https://res.cloudinary.com/dacsww4tg/image/upload/c_scale,w_300";
 
-// Fetches image paths from a JSON file
+// Offline fallback images (local fallbacks)
+
+// const fallbackImages = [
+//     '../pictures/1.jpg',
+//     '../pictures/2.jpg',
+//     '../pictures/3.jpg',
+//     '../pictures/4.jpg',
+//     '../pictures/5.jpg'
+// ];
+
+const fallbackImages = Array.from({length: 300}, (_, i) => `../pictures/${i + 1}.jpg`);
+
+// Fetches image paths from a JSON file with offline fallback
 const fetchImagePaths = async () => {
-    const response = await fetch('../pictures.json');
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+    try {
+        // Try to fetch from network first
+        const response = await fetch('../pictures.json');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const paths = await response.json();
+        
+        // Cache the paths for offline use
+        localStorage.setItem('cachedImagePaths', JSON.stringify(paths));
+        localStorage.setItem('lastCacheTime', Date.now().toString());
+        
+        return paths;
+    } catch (error) {
+        console.log('Network fetch failed, trying cache:', error);
+        
+        // Try to use cached data
+        const cachedPaths = localStorage.getItem('cachedImagePaths');
+        if (cachedPaths) {
+            console.log('Using cached image paths');
+            return JSON.parse(cachedPaths);
+        }
+        
+        // If no cache, return fallback image paths
+        console.log('No cache available, using fallback images');
+        return fallbackImages.map(() => ''); // Empty paths will trigger fallback
     }
-    return response.json();
 }
 
 // Creates a generator for unique random values from an array
@@ -40,19 +74,31 @@ const createUniqueRandomGenerator = (array, buffer) => {
 }
 
 // Creates a new link element with an image child element
-const createImageLink = imageUrl => {
+const createImageLink = (imageUrl, isOffline = false) => {
     const link = document.createElement("a");
     const image = document.createElement("img");
+    
     image.onerror = () => {
-        console.log("Image not found, using default image");
-        image.src = '../pictures/2.jpg'; 
+        console.log("Image not found, using fallback image");
+        // Use a random fallback image
+        const randomFallback = fallbackImages[Math.floor(Math.random() * fallbackImages.length)];
+        image.src = randomFallback;
+        link.href = randomFallback;
     };
 
     image.classList.add('fade-in');
 
-    const cleanedImageUrl = imageUrl.replace("/c_scale,w_300", "");
-    image.src = imageUrl;
-    link.href = cleanedImageUrl;
+    if (isOffline || imageUrl === '') {
+        // Use fallback image for offline mode or empty paths
+        const randomFallback = fallbackImages[Math.floor(Math.random() * fallbackImages.length)];
+        image.src = randomFallback;
+        link.href = randomFallback;
+    } else {
+        const cleanedImageUrl = imageUrl.replace("/c_scale,w_300", "");
+        image.src = imageUrl;
+        link.href = cleanedImageUrl;
+    }
+    
     link.appendChild(image);
 
     return link;
@@ -64,26 +110,52 @@ const createPhotoGrid = async () => {
         const paths = await fetchImagePaths();
         console.log(`Number of links: ${paths.length}`);
         console.log(`Check them all at https://gallery-grid-theta.vercel.app/pages/list.html`);
-        const imageUrls = paths.map(path => path.trim() !== "" ? `${cloudUrl}${path}` : "/pictures/1.jpg");
+        
+        // Check if we're in offline mode (using cached data or fallbacks)
+        const isOffline = navigator.onLine === false || 
+                          (paths.length > 0 && paths[0] === '') ||
+                          localStorage.getItem('cachedImagePaths') !== null && navigator.onLine === false;
+        
+        if (isOffline) {
+            console.log('Running in offline mode');
+        }
+        
+        const imageUrls = paths.map(path => {
+            if (path.trim() === "") {
+                return ""; // Will trigger fallback
+            }
+            return `${cloudUrl}${path}`;
+        });
+        
         const getRandomUrl = createUniqueRandomGenerator(imageUrls, picBuffer);
         const getRandomIndex = createUniqueRandomGenerator([...Array(gridSize).keys()], indexBuffer);
 
         for (let i = 1; i <= gridSize; i++) {
             const cell = document.createElement("div");
             cell.className = "cell";
-            const imageLink = createImageLink(getRandomUrl());
+            const imageLink = createImageLink(getRandomUrl(), isOffline);
             cell.appendChild(imageLink);
             photoGrid.appendChild(cell);
         }
 
+        // Set up refresh interval with offline awareness
         setInterval(() => {
             const cells = photoGrid.querySelectorAll(".cell");
             const cell = cells[getRandomIndex()];
             const image = cell.querySelector("img");
 
             image.classList.remove('fade-in');
-            image.src = getRandomUrl();
-            console.log(`Image src: ${image.src.replace("/c_scale,w_300", "")}`);
+            
+            // Check connectivity before trying to load new images
+            if (navigator.onLine && !isOffline) {
+                image.src = getRandomUrl();
+                console.log(`Image src: ${image.src.replace("/c_scale,w_300", "")}`);
+            } else {
+                // Use fallback images when offline
+                const randomFallback = fallbackImages[Math.floor(Math.random() * fallbackImages.length)];
+                image.src = randomFallback;
+                console.log(`Offline mode - Using fallback: ${randomFallback}`);
+            }
 
             // Add a slight delay before re-adding the fade-in class to restart the animation
             setTimeout(() => {
@@ -91,10 +163,34 @@ const createPhotoGrid = async () => {
             }, 20);
         }, refreshRate);
 
+        // Listen for online/offline events
+        window.addEventListener('online', () => {
+            console.log('Connection restored - will try to fetch fresh images on next refresh');
+        });
+        
+        window.addEventListener('offline', () => {
+            console.log('Connection lost - switching to offline mode');
+        });
+
     } catch (error) {
         console.log('Fetch failed:', error);
         const errorMessageDiv = document.getElementById('error-message');
-        errorMessageDiv.textContent = 'Oops! It is a ghost town here. Please try again later.';
+        if (errorMessageDiv) {
+            errorMessageDiv.textContent = 'Running in offline mode with cached images.';
+        }
+        
+        // Still try to create grid with fallback images
+        const fallbackGrid = () => {
+            for (let i = 1; i <= gridSize; i++) {
+                const cell = document.createElement("div");
+                cell.className = "cell";
+                const imageLink = createImageLink('', true);
+                cell.appendChild(imageLink);
+                photoGrid.appendChild(cell);
+            }
+        };
+        
+        fallbackGrid();
     }
 }
 
