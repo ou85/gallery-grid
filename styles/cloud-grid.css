@@ -23,14 +23,26 @@ a:hover {
 a:visited {
   color: var(--text_light); 
 }
-.container {
+/* .container {
   margin: -5px;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh; 
   overflow-y: auto;
+} */
+
+.container {
+  margin: -5px;
+  height: auto; 
+  display: flex;
+  flex-direction: column;       /* stack elements vertically */
+  justify-content: flex-start;  /* start from top */
+  align-items: center;          /* center horizontally */
+  min-height: 100vh;            /* ensures it covers full screen */
+  overflow-y: auto;             /* allow scrolling if content exceeds height */
 }
+
 /* clock ================================ */
 @keyframes slide-in-top {
   0% {transform: translateY(-100%); }
@@ -43,13 +55,15 @@ a:visited {
   margin: auto;
   max-width: 500px;
   min-width: 100px;
-  height: 10vh;
+  /* height: 10vh; */
+  min-height: 10vh;
   text-align: center;
   font-size: 32px; 
-  padding: 5; 
+  margin-top: 2rem;
+  padding: 5px; 
   font-weight: bold;
   border-bottom: 3px solid var(--clock);
-  margin-bottom: 16; 
+  margin-bottom: 16px; 
   animation: slide-in-top 1s forwards;
 }
 #dayOfWeek {
@@ -84,8 +98,6 @@ a:visited {
 }
 #photo-grid img {
   margin: -2.5px;
-  /* width: 200px; */
-  /* height: 133px; */
   width: 300px;
   height: 200px;
   object-fit: cover;
@@ -104,8 +116,6 @@ a:visited {
 @media (max-width: 600px) {
   #photo-grid {
     grid-template-columns: 300px;
-    /* grid-template-columns: repeat(2, 300px); */
-
   }
 }
 /* WEATHER __________________________________________________*/
