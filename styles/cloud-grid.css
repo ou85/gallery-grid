@@ -23,21 +23,13 @@ a:hover {
 a:visited {
   color: var(--text_light); 
 }
-/* .container {
-  margin: -5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh; 
-  overflow-y: auto;
-} */
-
 .container {
   margin: -5px;
   height: auto; 
   display: flex;
   flex-direction: column;       /* stack elements vertically */
-  justify-content: flex-start;  /* start from top */
+  /* justify-content: flex-start;   */
+  justify-content: center;  
   align-items: center;          /* center horizontally */
   min-height: 100vh;            /* ensures it covers full screen */
   overflow-y: auto;             /* allow scrolling if content exceeds height */
@@ -55,11 +47,11 @@ a:visited {
   margin: auto;
   max-width: 500px;
   min-width: 100px;
-  /* height: 10vh; */
-  min-height: 10vh;
+  height: 10vh;
+  /* min-height: 10vh; */
   text-align: center;
   font-size: 32px; 
-  margin-top: 2rem;
+  /* margin-top: 2rem; */
   padding: 5px; 
   font-weight: bold;
   border-bottom: 3px solid var(--clock);
