@@ -27,13 +27,13 @@
 }a:visited {
   color: var(--text_light); 
 }.container {
-  margin: -5px;
+  margin: 1rem;
   display: flex;
   justify-content: center;
   align-items: top;
   height: 100vh; 
   overflow-y: auto;
-  margin-bottom: 2rem;
+  /* margin-bottom: 2rem; */
 }.clockpage {
   display: flex;
   flex-direction: column;
@@ -44,7 +44,7 @@
   height: 10vh;
   text-align: center;
   font-size: 32px; 
-  padding: 5; 
+  padding: 0.5rem 5px; 
   font-weight: bold;
   border-bottom: 3px solid var(--clock);
   margin-bottom: 16; 
