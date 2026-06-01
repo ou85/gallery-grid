@@ -9,6 +9,12 @@
   --clock: #55c49f;
   --clock-darker: #2f6d58;
 }
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+}
 body {
   background: var(--bg_main);
   font-family: "Titillium Web", sans-serif;
@@ -24,15 +30,20 @@ a:visited {
   color: var(--text_light); 
 }
 .container {
-  margin: -5px;
-  height: auto; 
+  /* border: 1px solid var(--darkred); */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-height: 100vh;   
+  overflow-y: auto;   
+  scrollbar-width: none;
   display: flex;
-  flex-direction: column;       /* stack elements vertically */
-  /* justify-content: flex-start;   */
-  justify-content: center;  
-  align-items: center;          /* center horizontally */
-  min-height: 100vh;            /* ensures it covers full screen */
-  overflow-y: auto;             /* allow scrolling if content exceeds height */
+  flex-direction: column;
+  align-items: center;
+}
+.container::-webkit-scrollbar {
+  display: none;
 }
 
 /* clock ================================ */
@@ -48,14 +59,12 @@ a:visited {
   max-width: 500px;
   min-width: 100px;
   height: 10vh;
-  /* min-height: 10vh; */
   text-align: center;
   font-size: 32px; 
-  /* margin-top: 2rem; */
   padding: 5px; 
   font-weight: bold;
   border-bottom: 3px solid var(--clock);
-  margin-bottom: 16px; 
+  margin-bottom: 1rem; 
   animation: slide-in-top 1s forwards;
 }
 #dayOfWeek {
@@ -64,54 +73,8 @@ a:visited {
   font-size: 16px;
   margin-bottom: 8px;
 }
-/* @keyframes fade-in {
-  to { opacity: 1; }
-} */
-@keyframes fade-in {
-  0% {
-    opacity: 0.1;
-    transform: scale(1.05);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-.fade-in {
-  /* opacity: 0.1; */
-  animation: fade-in 1s ease-in 1 forwards;
-}
-#photo-grid {
-  animation: fade-in 3s forwards;
-  display: grid;
-  grid-template-columns: repeat(4, 300px);
-  grid-gap: 10px;
-  margin-top: 20px;
-}
-#photo-grid img {
-  margin: -2.5px;
-  width: 300px;
-  height: 200px;
-  object-fit: cover;
-  background-color: var(--bg_main);
-}
-@media (max-width: 1200px) {
-  #photo-grid {
-    grid-template-columns: repeat(3, 300px);
-  }
-}
-@media (max-width: 900px) {
-  #photo-grid {
-    grid-template-columns: repeat(2, 300px);
-  }
-}
-@media (max-width: 600px) {
-  #photo-grid {
-    grid-template-columns: 300px;
-  }
-}
-/* WEATHER __________________________________________________*/
 
+/* WEATHER __________________________________________________*/
 .bottom-banner {
   color: var(--text_light);
   display: flex;
@@ -120,12 +83,8 @@ a:visited {
   height: 10vh;
 }
 @keyframes slide-in {
-  0% {
-    transform: translateX(100%);
-  }
-  100% {
-    transform: translateX(0);
-  }
+  0% {transform: translateX(100%);}
+  100% {transform: translateX(0);}
 }
 form {
   animation: slide-in 1s forwards;
@@ -196,7 +155,6 @@ form {
 }
 .ajax-section .city {
   padding: 20px 5%;
-  border-radius: 10px;
   color: var(--text_light);
   animation: slide-in-left 1s forwards;
 }
@@ -234,6 +192,55 @@ form {
 ul, li { 
   list-style-type: none;
 }
+
+/* ========================== */
+
+@keyframes fade-in {
+  0% {
+    opacity: 0.1;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.fade-in {
+  animation: fade-in 1s ease-in 1 forwards;
+}
+
+/* PHOTO GRID ------------------------------------------ */
+#photo-grid {
+  animation: fade-in 3s forwards;
+  display: grid;
+  grid-template-columns: repeat(4, 300px);
+  grid-gap: 10px;
+  margin-top: 20px;
+}
+#photo-grid img {
+  margin: -2.5px;
+  width: 300px;
+  height: 200px;
+  object-fit: cover;
+  background-color: var(--bg_main);
+}
+@media (max-width: 1200px) {
+  #photo-grid {
+    grid-template-columns: repeat(3, 300px);
+  }
+}
+@media (max-width: 900px) {
+  #photo-grid {
+    grid-template-columns: repeat(2, 300px);
+  }
+}
+@media (max-width: 600px) {
+  #photo-grid {
+    grid-template-columns: 300px;
+  }
+}
+
+/* ========================== */
 
 #error-message {
   color: palevioletred;

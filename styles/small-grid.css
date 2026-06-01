@@ -9,6 +9,12 @@
   --clock: #55c49f;
   --clock-darker: #2f6d58;
 }
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden; 
+}
 body {
   background: var(--bg_main);
   font-family: "Titillium Web", sans-serif;
@@ -24,16 +30,22 @@ a:visited {
   color: var(--text_light); 
 }
 .container {
-  margin: -5px;
-  /* border: var(--orange) 1px solid; */
-  border-radius: 10px;
+  /* border: 1px solid var(--darkred); */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-height: 100vh;   
+  overflow-y: auto;   
+  scrollbar-width: none;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  height: 100vh; 
-  overflow-y: auto;
-  
 }
+.container::-webkit-scrollbar {
+  display: none;
+}
+
 /* clock ================================ */
 @keyframes slide-in-top {
   0% {transform: translateY(-100%); }
@@ -49,10 +61,10 @@ a:visited {
   height: 10vh;
   text-align: center;
   font-size: 32px; 
-  padding: 5; 
+  padding: 5px; 
   font-weight: bold;
   border-bottom: 3px solid var(--clock);
-  margin-bottom: 16; 
+  margin-bottom: 1rem; 
   animation: slide-in-top 1s forwards;
 }
 #dayOfWeek {
@@ -61,51 +73,8 @@ a:visited {
   font-size: 16px;
   margin-bottom: 8px;
 }
-@keyframes fade-out {
-  0% { opacity: 1; }
-  100% { opacity: 0; }
-}
-@keyframes fadeIn {
-  to { opacity: 1; }
-}
-.fade-out {
-  animation: fade-out .4s ease-in 1 forwards;
-}
-.fade-in {
-  opacity: 0.3;
-  animation: fadeIn .7s ease-in 1 forwards;
-}
-#photo-grid {
-  animation: fade-in 2s forwards;
-  display: grid;
-  grid-template-columns: repeat(4, 200px);
-  grid-gap: 10px;
-  margin-top: 20px;
-}
-#photo-grid img {
-  margin: -2.5px;
-  width: 200px;
-  height: 150px;
-  background-size: cover;
-  background-position: center;
-}
-@media (max-width: 1200px) {
-  #photo-grid {
-    grid-template-columns: repeat(4, 200px);
-  }
-}
-@media (max-width: 900px) {
-  #photo-grid {
-    grid-template-columns: repeat(3, 200px);
-  }
-}
-@media (max-width: 600px) {
-  #photo-grid {
-    grid-template-columns: repeat(2, 200px);
-  }
-}
-/* WEATHER __________________________________________________*/
 
+/* WEATHER __________________________________________________*/
 .bottom-banner {
   color: var(--text_light);
   display: flex;
@@ -115,7 +84,7 @@ a:visited {
 }
 @keyframes slide-in {
   0% {transform: translateX(100%);}
-  100% {transform: translateX(0); }
+  100% {transform: translateX(0);}
 }
 form {
   animation: slide-in 1s forwards;
@@ -186,7 +155,6 @@ form {
 }
 .ajax-section .city {
   padding: 20px 5%;
-  border-radius: 10px;
   color: var(--text_light);
   animation: slide-in-left 1s forwards;
 }
@@ -223,4 +191,52 @@ form {
 .city-name{font-size: 24px;}
 ul, li { 
   list-style-type: none;
+}
+
+/* ========================== */
+
+@keyframes fade-out {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+.fade-out {
+  animation: fade-out 0.4s ease-in 1 forwards;
+}
+.fade-in {
+  opacity: 0.3;
+  animation: fadeIn 0.7s ease-in 1 forwards;
+}
+
+/* PHOTO GRID ------------------------------------------ */
+#photo-grid {
+  animation: fade-in 2s forwards;
+  display: grid;
+  grid-template-columns: repeat(4, 200px);
+  grid-gap: 10px;
+  margin-top: 20px;
+}
+#photo-grid img {
+  margin: -2.5px;
+  width: 200px;
+  height: 150px;
+  background-size: cover;
+  background-position: center;
+}
+@media (max-width: 1200px) {
+  #photo-grid {
+    grid-template-columns: repeat(4, 200px);
+  }
+}
+@media (max-width: 900px) {
+  #photo-grid {
+    grid-template-columns: repeat(3, 200px);
+  }
+}
+@media (max-width: 600px) {
+  #photo-grid {
+    grid-template-columns: repeat(2, 200px);
+  }
 }
