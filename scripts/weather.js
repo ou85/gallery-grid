@@ -4,8 +4,8 @@
 //
 // ======  Setting constants ========
 //
-let defaultCity = 'Stockholm'; //_________________________________________ Default city
-let refreshWeather = 15; //_______________________________________________ Page Refresh rate in minutes
+let defaultCity = 'Stockholm';  //_________________________________________ Default city
+let refreshWeather = 15;        //_________________________________________ Page Refresh rate in minutes
 //
 //
 // ======  Fetching weather data ========
