@@ -56,22 +56,22 @@ a:visited {
   flex-direction: column;
   justify-content: flex-end;
   margin: auto;
-  max-width: 500px;
-  min-width: 100px;
+  max-width: 31.25rem;
+  min-width: 6.25rem;
   height: 10vh;
   text-align: center;
-  font-size: 32px; 
-  padding: 5px; 
+  font-size: 2rem; 
+  padding: 0.3125rem; 
   font-weight: bold;
-  border-bottom: 3px solid var(--clock);
-  margin-bottom: 1rem; 
+  border-bottom: 0.1875rem solid var(--clock);
+  margin-bottom: 1.5rem; 
   animation: slide-in-top 1s forwards;
 }
 #dayOfWeek {
   display: block;
   font-weight: normal;
-  font-size: 16px;
-  margin-bottom: 8px;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 /* WEATHER __________________________________________________*/

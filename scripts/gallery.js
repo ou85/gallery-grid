@@ -8,8 +8,8 @@
 // ======  Setting constants ========
 //
 const amountOfPictures = 300; //________________________Amount of pictures in folder "Pictures"
-const refresh = 30; //__________________________________Page Refresh rate in seconds
-const baseUrl = 'pictures'; //__________________________Base URL
+const refresh = 30;           //________________________Page Refresh rate in seconds
+const baseUrl = 'pictures';   //________________________Base URL
 //
 //
 // ======  Set up photo grid ========
