@@ -14,10 +14,15 @@ const updateClock = () => {
       "Saturday",
     ];
     const now = new Date();
-    const timeString = now.toLocaleTimeString("en-GB", {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
+    // const timeString = now.toLocaleTimeString("en-GB", {
+    //   hour: "2-digit",
+    //   minute: "2-digit",
+    // });
+
+    const hours = now.getHours().toString().padStart(2, "0");
+    const minutes = now.getMinutes().toString().padStart(2, "0");
+    const timeString = `${hours} : ${minutes}`;
+
     const days = now.getDay();
     clockElement.innerText = timeString;
     day.innerHTML = dayOfWeek[days];
