@@ -1,7 +1,7 @@
-const preload = 30;              // Number of images to preload
+const preload = 20;              // Number of images to preload
 const gridSize = 12;             // Number of images in the grid
-const picBuffer = 120;           // Buffer for random image generator
-const indexBuffer = 24;          // Buffer for random index generator
+const picBuffer = 60;            // Buffer for random image generator
+const indexBuffer = 4;           // Buffer for random index generator
 const refreshRate = 30 * 1000;   // Refresh rate in milliseconds
 const photoGrid = document.getElementById("photo-grid");
 const cloudUrl = "https://res.cloudinary.com/dacsww4tg/image/upload/c_scale,w_300";
