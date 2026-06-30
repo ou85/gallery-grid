@@ -34,7 +34,8 @@ const createPhotoGrid = async () => {
         const paths = await fetchImagePaths();
         console.log(`Number of links: ${paths.length}`);
         console.log(`Check them all at https://gallery-grid-theta.vercel.app/pages/list.html`);
-        const imageUrls = paths.map(path => path.trim() !== "" ? `${cloudUrl}${path}` : "/pictures/1.jpg");
+        // const imageUrls = paths.map(path => path.trim() !== "" ? `${cloudUrl}${path}` : "/pictures/1.jpg");
+        const imageUrls = paths.map(path => path.trim() !== "" ? `${cloudUrl}${path}` : "/pictures/moto_perfecto_3x2.jpg");
 
         imageUrls.forEach(url => {
             const cell = document.createElement("div");
