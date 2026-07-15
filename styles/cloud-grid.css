@@ -58,3 +58,33 @@
   text-align: center;
   width: 100%;
 }
+
+
+/* ========================== */
+
+.clock-colon {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25em;
+  width: 0.65em;
+  height: 1em;
+  vertical-align: middle;
+  /* animation: clock-blink 1s steps(1, start) infinite; */
+  padding-bottom: 0.2rem;
+}
+
+.clock-colon::before,
+.clock-colon::after {
+  content: "";
+  display: block;
+  width: 0.15em;
+  height: 0.15em;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+@keyframes clock-blink {
+  50% { opacity: 0; }
+}
