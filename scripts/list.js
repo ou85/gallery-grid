@@ -1,5 +1,5 @@
 const photoGrid = document.getElementById("photo-grid");
-const cloudUrl = "https://res.cloudinary.com/dacsww4tg/image/upload/c_scale,w_300";
+const cloudUrl = "https://res.cloudinary.com/dacsww4tg/image/upload/c_scale,w_400";
 
 // Fetches image paths from a JSON file
 const fetchImagePaths = async () => {
