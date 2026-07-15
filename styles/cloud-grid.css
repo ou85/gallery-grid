@@ -1,3 +1,7 @@
+.clockpage {
+  height: 6.5rem;
+}
+
 /* ========================== */
 
 @keyframes fade-in {
@@ -41,8 +45,10 @@
 }
 @media (max-width: 600px) {
   #photo-grid {
-    grid-template-columns: 300px;
+    grid-template-columns: 580px;
   }
+  #photo-grid img {
+    width: 580px;}
 }
 
 /* ========================== */
