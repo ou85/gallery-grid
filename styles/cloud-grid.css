@@ -70,13 +70,11 @@
   width: 0.65em;
   height: 1em;
   vertical-align: middle;
-  /* animation: clock-blink 1s steps(1, start) infinite; */
-  animation: clock-blink 1.6s ease-in-out infinite;
+  /* animation: clock-blink 1.6s ease-in-out infinite; */
   padding-bottom: 0.25rem;
 }
 
 @keyframes clock-blink {
-  /* 50% { opacity: 0; } */
   0%, 65%, 100% { opacity: 1; }
   25% { opacity: 0.05; }
 }
