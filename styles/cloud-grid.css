@@ -1,4 +1,8 @@
-/* ========================== */
+.clockpage {
+  height: 6.75rem;
+}
+
+/* ----------------------------------------------------- */
 
 @keyframes fade-in {
   0% {
@@ -41,14 +45,47 @@
 }
 @media (max-width: 600px) {
   #photo-grid {
-    grid-template-columns: 300px;
+    grid-template-columns: 580px;
   }
+  #photo-grid img {
+    width: 580px;}
 }
 
-/* ========================== */
+/* ERROR ----------------------------------------------- */
 
 #error-message {
   color: palevioletred;
   text-align: center;
   width: 100%;
 }
+
+/* CLOCK ----------------------------------------------- */
+
+.clock-colon {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25em;
+  width: 0.65em;
+  height: 1em;
+  vertical-align: middle;
+  /* animation: clock-blink 1.6s ease-in-out infinite; */
+  padding-bottom: 0.25rem;
+}
+
+@keyframes clock-blink {
+  0%, 65%, 100% { opacity: 1; }
+  25% { opacity: 0.05; }
+}
+
+.clock-colon::before,
+.clock-colon::after {
+  content: "";
+  display: block;
+  width: 0.15em;
+  height: 0.15em;
+  border-radius: 50%;
+  background: currentColor;
+}
+

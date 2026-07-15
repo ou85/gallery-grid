@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Cloud</title>
+    <title>Cloud PHOTO GRID</title>
     <link rel="icon" type="image/png" sizes="114x114" href="../favicon.png"/>
     <link rel="stylesheet" href="../styles/styles.css"/>
     <link rel="stylesheet" href="../styles/cloud-grid.css"/>
@@ -12,28 +12,30 @@
   <body>
     <div class="container">
       <div>
-      <div class="clockpage">
-        <a id="clock" href="../index.html" style="font-size: 2.5rem;"></a>
-        <a id="dayOfWeek" href="list.html"></a>
-      </div>
-      <div id="photo-grid"></div>
-      <div id="error-message"></div>
-      <div class="wcontainer">
-        <div class="bottom-banner">
-          <section class="ajax-section">
-            <div class="cities"></div>
-          </section>
-          <form>
-            <input type="text" placeholder="Search for a city" id="search">
-            <button type="submit" class="search-button"><i class="fas fa-search" style="color: #c0bfbc;"></i></button>
-            <span class="msg"></span>
-          </form>
+        <div class="clockpage">
+          <a id="clock" href="../index.html" style="font-size: 3.5rem;">
+            <span id="hours"></span><span id="colon" class="clock-colon"></span><span id="minutes"></span>
+          </a>
+          <a id="dayOfWeek" href="list.html"></a>
+        </div>
+        <div id="photo-grid"></div>
+        <div id="error-message"></div>
+        <div class="wcontainer">
+          <div class="bottom-banner">
+            <section class="ajax-section">
+              <div class="cities"></div>
+            </section>
+            <form>
+              <input type="text" placeholder="Search for a city" id="search">
+              <button type="submit" class="search-button"><i class="fas fa-search" style="color: #c0bfbc;"></i></button>
+              <span class="msg"></span>
+            </form>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <script src="../scripts/clock.js"></script>
-  <script src="../scripts/cloud-grid.js"></script>
-  <script src="../scripts/weather.js"></script>
+    <script src="../scripts/cloud-clock.js"></script>
+    <script src="../scripts/cloud-grid.js"></script>
+    <script src="../scripts/weather.js"></script>
   </body>
 </html>
