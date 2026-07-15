@@ -1,8 +1,8 @@
 .clockpage {
-  height: 6.5rem;
+  height: 6.75rem;
 }
 
-/* ========================== */
+/* ----------------------------------------------------- */
 
 @keyframes fade-in {
   0% {
@@ -51,7 +51,7 @@
     width: 580px;}
 }
 
-/* ========================== */
+/* ERROR ----------------------------------------------- */
 
 #error-message {
   color: palevioletred;
@@ -59,8 +59,7 @@
   width: 100%;
 }
 
-
-/* ======= CLOCK ============ */
+/* CLOCK ----------------------------------------------- */
 
 .clock-colon {
   display: inline-flex;
@@ -72,7 +71,14 @@
   height: 1em;
   vertical-align: middle;
   /* animation: clock-blink 1s steps(1, start) infinite; */
-  padding-bottom: 0.2rem;
+  animation: clock-blink 1.6s ease-in-out infinite;
+  padding-bottom: 0.25rem;
+}
+
+@keyframes clock-blink {
+  /* 50% { opacity: 0; } */
+  0%, 65%, 100% { opacity: 1; }
+  25% { opacity: 0.05; }
 }
 
 .clock-colon::before,
@@ -85,6 +91,3 @@
   background: currentColor;
 }
 
-@keyframes clock-blink {
-  50% { opacity: 0; }
-}
