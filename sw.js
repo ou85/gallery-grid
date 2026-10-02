@@ -1,5 +1,5 @@
-const SHELL_CACHE = "gallery-grid-shell-v1";
-const RUNTIME_CACHE = "gallery-grid-runtime-v1";
+const SHELL_CACHE = "gallery-grid-shell-v2";
+const RUNTIME_CACHE = "gallery-grid-runtime-v2";
 
 const SHELL_FILES = [
   "/",
@@ -12,6 +12,7 @@ const SHELL_FILES = [
   "/scripts/cloud-clock.js",
   "/scripts/cloud-grid.js",
   "/scripts/gallery.js",
+  "/scripts/image-deck.js",
   "/scripts/list.js",
   "/scripts/small-grid.js",
   "/scripts/weather.js",
@@ -22,7 +23,7 @@ const SHELL_FILES = [
   "/styles/style.css",
   "/styles/styles.css",
   "/styles/TitilliumWeb.woff2",
-  "/pictures.json",
+  "/images.js",
 ];
 
 self.addEventListener("install", (event) => {

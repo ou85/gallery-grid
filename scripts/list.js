@@ -1,57 +1,34 @@
 const photoGrid = document.getElementById("photo-grid");
-const cloudUrl = "https://res.cloudinary.com/dacsww4tg/image/upload/c_scale,w_400";
 
-// Fetches image paths from a JSON file
-const fetchImagePaths = async () => {
-    const response = await fetch('../pictures.json');
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return response.json();
-}
+const createImageLink = (imageUrl) => {
+  const link = document.createElement("a");
+  const image = document.createElement("img");
 
-// Creates a new link element with an image child element
-const createImageLink = imageUrl => {
-    const link = document.createElement("a");
-    const image = document.createElement("img");
-    image.onerror = () => {
-        console.log("Image not found, using default image");
-        image.src = '../pictures/2.jpg'; 
-    };
+  image.onerror = () => {
+    console.log("Image not found, using default image");
+    image.src = "../pictures/2.jpg";
+  };
 
-    image.classList.add('fade-in');
-    const cleanedImageUrl = imageUrl.replace("/c_scale,w_300", "");
-    image.src = imageUrl;
-    link.href = cleanedImageUrl;
-    link.appendChild(image);
+  image.classList.add("fade-in");
+  image.src = imageUrl;
+  link.href = imageUrl;
+  link.appendChild(image);
 
-    return link;
-}
+  return link;
+};
 
-// Creates a photo grid with a fade-in effect for each image
-const createPhotoGrid = async () => {
-    try {
-        const paths = await fetchImagePaths();
-        console.log(`Number of links: ${paths.length}`);
-        console.log(`Check them all at https://gallery-grid-theta.vercel.app/pages/list.html`);
-        // const imageUrls = paths.map(path => path.trim() !== "" ? `${cloudUrl}${path}` : "/pictures/1.jpg");
-        const imageUrls = paths.map(path => path.trim() !== "" ? `${cloudUrl}${path}` : "/pictures/moto_perfecto_3x2.jpg");
+const createPhotoGrid = () => {
+  const imageUrls = window.GALLERY_IMAGES;
+  console.log(`Number of links: ${imageUrls.length}`);
 
-        imageUrls.forEach(url => {
-            const cell = document.createElement("div");
-            cell.className = "cell";
-            const imageLink = createImageLink(url);
-            cell.appendChild(imageLink);
-            photoGrid.appendChild(cell);
-        });
+  imageUrls.forEach((url) => {
+    const cell = document.createElement("div");
+    cell.className = "cell";
+    cell.appendChild(createImageLink(url));
+    photoGrid.appendChild(cell);
+  });
 
-        document.getElementById("info").innerHTML = `Total number of pictures: ${paths.length}`;
-
-    } catch (error) {
-        console.log('Fetch failed:', error);
-        const errorMessageDiv = document.getElementById('error-message');
-        errorMessageDiv.textContent = 'Oops! It is a ghost town here. Please try again later.';
-    }
-}
+  document.getElementById("info").textContent = `Total number of pictures: ${imageUrls.length}`;
+};
 
 createPhotoGrid();
