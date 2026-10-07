@@ -1043,6 +1043,17 @@ const images = [
   "https://res.cloudinary.com/dacsww4tg/image/upload/v1786004854/domo-0014_dsb8wh.jpg",
   "https://res.cloudinary.com/dacsww4tg/image/upload/v1791338607/wallpapers/Patagonia_vxv.jpg",
   "https://res.cloudinary.com/dacsww4tg/image/upload/v1791338607/wallpapers/Italy_Como_lake.jpg",
+  "https://res.cloudinary.com/dacsww4tg/image/upload/v1791339589/wallpapers/Australia_Victoria_fzfje5.jpg",
+  "https://res.cloudinary.com/dacsww4tg/image/upload/v1791339590/wallpapers/Netherland_a2uh9k.jpg",
+  "https://res.cloudinary.com/dacsww4tg/image/upload/v1791339590/wallpapers/Ai-Petri_Crimea_rigrtl.jpg",
+  "https://res.cloudinary.com/dacsww4tg/image/upload/v1791339591/wallpapers/Hawaii_Oahu_anbksq.jpg",
+  "https://res.cloudinary.com/dacsww4tg/image/upload/v1791339608/wallpapers/Japan_Fuji_kr1jch.jpg",
+  "https://res.cloudinary.com/dacsww4tg/image/upload/v1791339609/wallpapers/Russia_Karelia_h8ylw4.jpg",
+  "https://res.cloudinary.com/dacsww4tg/image/upload/v1791339614/wallpapers/Scotland_Drummond_Castle_hrvvgp.jpg",
+  "https://res.cloudinary.com/dacsww4tg/image/upload/v1791339618/wallpapers/Georgia_m9qdoc.jpg",
+  "https://res.cloudinary.com/dacsww4tg/image/upload/v1791339626/wallpapers/Island_rmyyof.jpg",
+  "https://res.cloudinary.com/dacsww4tg/image/upload/v1791339627/wallpapers/Canada_Alberta_dawzc7.jpg",
+  "https://res.cloudinary.com/dacsww4tg/image/upload/v1791339627/wallpapers/Slovakia_Tatras_n0ofxi.jpg",
 ];
 
 // The canonical image list. Consumers must not mutate it.
