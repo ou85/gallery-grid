@@ -23,11 +23,11 @@ Deployed on Vercel. [Example](https://gallery-grid-theta.vercel.app/index.html)
     cd gallery-grid
     ```
 
-## Run local http server
+## Run a local http server
 
-    ```sh
-    python3 -m http.server 8000
-    ```
+```sh
+python3 -m http.server 8000
+```
 
 ## Usage
 
