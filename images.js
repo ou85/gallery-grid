@@ -1041,6 +1041,8 @@ const images = [
   "https://res.cloudinary.com/dacsww4tg/image/upload/v1786004842/arch-33931_fungfi.jpg",
   "https://res.cloudinary.com/dacsww4tg/image/upload/v1786004843/kali-705756_ivsf1n.jpg",
   "https://res.cloudinary.com/dacsww4tg/image/upload/v1786004854/domo-0014_dsb8wh.jpg",
+  "https://res.cloudinary.com/dacsww4tg/image/upload/v1791338607/wallpapers/Patagonia_vxv.jpg",
+  "https://res.cloudinary.com/dacsww4tg/image/upload/v1791338607/wallpapers/Italy_Como_lake.jpg",
 ];
 
 // The canonical image list. Consumers must not mutate it.
