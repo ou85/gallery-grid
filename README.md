@@ -23,6 +23,12 @@ Deployed on Vercel. [Example](https://gallery-grid-theta.vercel.app/index.html)
     cd gallery-grid
     ```
 
+## Run local http server
+
+    ```sh
+    python3 -m http.server 8000
+    ```
+
 ## Usage
 
 1. Add your images to the `pictures` directory. Images should be named in the format `***.jpg`, where `***` is a number from 1 to 999.
