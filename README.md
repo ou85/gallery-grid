@@ -1,46 +1,49 @@
 # Gallery Grid
 
-This is a simple gallery grid project that displays a collection of images in a grid layout.
-Deployed on Vercel. [Example](https://gallery-grid-theta.vercel.app/index.html)
+Next.js gallery with a rotating grid, Cloudinary integration, weather, PWA caching, and a stable image list.
 
-## Features
+## Run locally
 
-- Displays a collection of images in a grid layout
-- Images load randomly from the `pictures` directory
-- Includes a weather widget
+```sh
+npm install
+cp .env.example .env.local
+npm run dev
+```
 
-## Installation
+Open `http://localhost:3000`. Do not commit `.env.local`.
 
-1. Clone the repository:
+Without Cloudinary credentials the site still uses its built-in legacy image catalogue. Set the variables below to add images from Cloudinary:
 
-    ```sh
-    git clone https://github.com/your-username/gallery-grid.git
-    ```
+```dotenv
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+CLOUDINARY_FOLDER=gallery
+OPENWEATHER_API_KEY=
+```
 
-2. Navigate to the project directory:
+## Image sources
 
-    ```sh
-    cd gallery-grid
-    ```
+- The existing catalogue stays available in its current List order.
+- Images in the Cloudinary Media Library asset folder `gallery` are appended to List from newest to oldest.
+- Home and Cloud Grid shuffle the combined catalogue and avoid duplicate visible images.
 
-## Run local http server
+The gallery refreshes its server cache every five minutes. The webhook endpoint is optional and is not required for using a Cloudinary Free account.
 
-    ```sh
-    python3 -m http.server 8000
-    ```
+## Deploy to Vercel
 
-## Usage
+Import the Git repository into Vercel, then set every variable from `.env.example` in **Project Settings → Environment Variables**.
 
-1. Add your images to the `pictures` directory. Images should be named in the format `***.jpg`, where `***` is a number from 1 to 999.
-2. Update the `NUM_IMAGES` constant in the `script.js` file with the number of images in the `pictures` directory.
-3. Open the `index.html` file in your browser to view the gallery.
+Legacy bookmark routes redirect to the new Next.js routes:
 
-## Contributing
+- `/index.html` → `/`
+- `/pages/cloud-grid.html` → `/cloud-grid`
+- `/pages/list.html` → `/list`
+- `/pages/small-grid.html` → `/small-grid`
 
-Contributions are welcome! If you have any ideas, suggestions, or bug reports, please open an issue or submit a pull request.
+## Checks
 
-## License
-
-This project is licensed under the [MIT License](LICENSE).  
-
-***
+```sh
+npx tsc --noEmit
+npm run build
+```

@@ -1,4 +1,4 @@
-const images = [ 
+export const legacyImages = [
   "https://res.cloudinary.com/dacsww4tg/image/upload/v1708437128/wallpapers/david-watkis-ttMBIEnFeKA-unsplash_f4ic1l.jpg",
   "https://res.cloudinary.com/dacsww4tg/image/upload/v1780450845/wallpapers/Aerial_view_of_elevated_pedestrian_bridge_through_a_forest_Henderson_Waves_Singapore_ngyur4.jpg",
   "https://res.cloudinary.com/dacsww4tg/image/upload/v1780450834/wallpapers/Castlepoint_lighthouse_at_sunrise_Wellington_region_Wairarapa_North_Island_New_Zealand_zhgsbw.jpg",
@@ -1035,7 +1035,7 @@ const images = [
   "https://res.cloudinary.com/dacsww4tg/image/upload/v1786004826/561827-1608195744_byxznx.jpg",
   "https://res.cloudinary.com/dacsww4tg/image/upload/v1786004826/wp11371154-560676032_h51iyb.jpg",
   "https://res.cloudinary.com/dacsww4tg/image/upload/v1786004830/wp2043537-4265549419_luqcm8.jpg",
-  "https://res.cloudinary.com/dacsww4tg/image/upload/v1786004837/arch-linux-1920-x-1200-w_gjbbda.jpg",
+  // "https://res.cloudinary.com/dacsww4tg/image/upload/v1786004837/arch-linux-1920-x-1200-w_gjbbda.jpg",
   "https://res.cloudinary.com/dacsww4tg/image/upload/v1786004850/linux-retro_3507_rqswmf.jpg",
   "https://res.cloudinary.com/dacsww4tg/image/upload/v1786004842/arch-33931_fungfi.jpg",
   "https://res.cloudinary.com/dacsww4tg/image/upload/v1786004843/kali-705756_ivsf1n.jpg",
@@ -1043,4 +1043,4 @@ const images = [
 ];
 
 // The canonical image list. Consumers must not mutate it.
-window.GALLERY_IMAGES = Object.freeze(images);
+export default legacyImages;
