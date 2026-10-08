@@ -12,8 +12,8 @@ export default async function ListPage() {
       <div className="list-shell">
         <header className="list-header">
           <div className="list-header-content">
-            <a className="home-link" href="/">
-              Home
+            <a className="home-link" href="/cloud-grid">
+              Back
             </a>
             <p>
               {images.length} photos total (including {cloudImages.length} in{" "}
