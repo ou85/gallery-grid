@@ -1,4 +1,4 @@
-const images = [ 
+export const legacyImages = [
   "https://res.cloudinary.com/dacsww4tg/image/upload/v1708437128/wallpapers/david-watkis-ttMBIEnFeKA-unsplash_f4ic1l.jpg",
   "https://res.cloudinary.com/dacsww4tg/image/upload/v1780450845/wallpapers/Aerial_view_of_elevated_pedestrian_bridge_through_a_forest_Henderson_Waves_Singapore_ngyur4.jpg",
   "https://res.cloudinary.com/dacsww4tg/image/upload/v1780450834/wallpapers/Castlepoint_lighthouse_at_sunrise_Wellington_region_Wairarapa_North_Island_New_Zealand_zhgsbw.jpg",
@@ -1093,5 +1093,4 @@ const images = [
   "https://res.cloudinary.com/dacsww4tg/image/upload/v1791348040/wallpapers/Hill_m6sv9a.gif",
 ];
 
-// The canonical image list. Consumers must not mutate it.
-window.GALLERY_IMAGES = Object.freeze(images);
+export default legacyImages;

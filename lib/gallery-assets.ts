@@ -92,5 +92,7 @@ export function getLegacyImages() {
 
 export async function getGalleryImages() {
   const cloudImages = await getCloudinaryGalleryImages();
-  return [...legacy, ...cloudImages];
+  return [...legacy, ...cloudImages].filter(
+    (image, index, all) => all.findIndex(({ originalUrl }) => originalUrl === image.originalUrl) === index
+  );
 }

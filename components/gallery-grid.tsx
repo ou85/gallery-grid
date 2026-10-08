@@ -13,6 +13,7 @@ export function GalleryGrid({ images, size, refreshMs, thumbnail = false }: Prop
   useEffect(() => {
     const nextDeck = new ImageDeck(images);
     deck.current = nextDeck;
+    console.log(`Images in rotation: ${images.length}`);
     setVisible(Array.from({ length: Math.min(size, images.length) }, () => nextDeck.next()));
   }, [images, size]);
 
