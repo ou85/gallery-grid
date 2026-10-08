@@ -8,9 +8,12 @@ export function ServiceWorker() {
       void navigator.serviceWorker.register("/sw.js");
     } else if ("serviceWorker" in navigator) {
       void navigator.serviceWorker.getRegistrations().then((registrations) => {
-        registrations.forEach((registration) => void registration.unregister());
+        registrations.forEach((registration) => {
+          void registration.unregister();
+        });
       });
     }
   }, []);
+
   return null;
 }

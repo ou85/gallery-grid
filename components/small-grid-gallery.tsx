@@ -16,7 +16,9 @@ function shuffledIndexes() {
 }
 
 export function SmallGridGallery() {
-  const [images, setImages] = useState(() => Array.from({ length: gridSize }, (_, index) => index));
+  const [images, setImages] = useState(() =>
+    Array.from({ length: gridSize }, (_, index) => index),
+  );
 
   useEffect(() => {
     let deck = shuffledIndexes();
@@ -37,18 +39,24 @@ export function SmallGridGallery() {
         let index = Math.floor(Math.random() * current.length);
         if (index === lastUpdatedIndex) index = (index + 1) % current.length;
         lastUpdatedIndex = index;
-        return current.map((image, currentIndex) => currentIndex === index ? nextImage() : image);
+        return current.map((image, currentIndex) =>
+          currentIndex === index ? nextImage() : image,
+        );
       });
     }, 15_000);
 
     return () => window.clearInterval(timer);
   }, []);
 
-  return <div id="photo-grid">
-    {images.map((index) => <div className="cell" key={index}>
-      <a href={imageUrl(index)} target="_blank" rel="noreferrer">
-        <img src={imageUrl(index)} alt="Random image" />
-      </a>
-    </div>)}
-  </div>;
+  return (
+    <div id="photo-grid">
+      {images.map((index) => (
+        <div className="cell" key={index}>
+          <a href={imageUrl(index)} target="_blank" rel="noreferrer">
+            <img src={imageUrl(index)} alt="Random image" />
+          </a>
+        </div>
+      ))}
+    </div>
+  );
 }
