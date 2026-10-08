@@ -13,6 +13,7 @@ export default async function ListPage() {
         <header className="list-header">
           <div className="list-header-content">
             <a className="home-link" href="/cloud-grid">
+              <i className="fas fa-arrow-left" aria-hidden="true" />{" "}
               Back
             </a>
             <p>
