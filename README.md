@@ -1,46 +1,49 @@
 # Gallery Grid
 
-This is a simple gallery grid project that displays a collection of images in a grid layout.
-Deployed on Vercel. [Example](https://gallery-grid-theta.vercel.app/index.html)
+Next.js gallery with a rotating grid, Cloudinary integration, weather, PWA caching, and a stable image list.
 
-## Features
-
-- Displays a collection of images in a grid layout
-- Images load randomly from the `pictures` directory
-- Includes a weather widget
-
-## Installation
-
-1. Clone the repository:
-
-    ```sh
-    git clone https://github.com/your-username/gallery-grid.git
-    ```
-
-2. Navigate to the project directory:
-
-    ```sh
-    cd gallery-grid
-    ```
-
-## Run a local http server
+## Run locally
 
 ```sh
-python3 -m http.server 8000
+npm install
+cp .env.example .env.local
+npm run dev
 ```
 
-## Usage
+Open `http://localhost:3000`. Do not commit `.env.local`.
 
-1. Add your images to the `pictures` directory. Images should be named in the format `***.jpg`, where `***` is a number from 1 to 999.
-2. Update the `NUM_IMAGES` constant in the `script.js` file with the number of images in the `pictures` directory.
-3. Open the `index.html` file in your browser to view the gallery.
+Without Cloudinary credentials the site still uses its built-in legacy image catalogue. Set the variables below to add images from Cloudinary:
 
-## Contributing
+```dotenv
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+CLOUDINARY_FOLDER=gallery
+OPENWEATHER_API_KEY=
+```
 
-Contributions are welcome! If you have any ideas, suggestions, or bug reports, please open an issue or submit a pull request.
+## Image sources
 
-## License
+- The existing catalogue stays available in its current List order.
+- Images in the Cloudinary Media Library asset folder `gallery` are appended to List from newest to oldest.
+- Home and Cloud Grid shuffle the combined catalogue and avoid duplicate visible images.
 
-This project is licensed under the [MIT License](LICENSE).  
+The gallery refreshes its server cache every five minutes. The webhook endpoint is optional and is not required for using a Cloudinary Free account.
 
-***
+## Deploy to Vercel
+
+Import the Git repository into Vercel, then set every variable from `.env.example` in **Project Settings → Environment Variables**.
+
+Legacy bookmark routes redirect to the new Next.js routes:
+
+- `/index.html` → `/`
+- `/pages/cloud-grid.html` → `/cloud-grid`
+- `/pages/list.html` → `/list`
+- `/pages/small-grid.html` → `/small-grid`
+
+## Checks
+
+```sh
+npx tsc --noEmit
+npm run build
+```
