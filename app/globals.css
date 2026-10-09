@@ -10,11 +10,21 @@ a { color:var(--text_light); text-decoration:none; } a:visited { color:var(--tex
 @keyframes slide-in { from { transform:translateX(100%); } to { transform:translateX(0); } }
 @keyframes slide-in-left { from { transform:translateX(-100%); } to { transform:translateX(0); } }
 @keyframes fade-in { from { opacity:.1; transform:scale(1.05); } to { opacity:1; transform:scale(1); } }
+@keyframes image-crossfade-out { from { opacity:1; } to { opacity:0; } }
+@keyframes image-crossfade-in { from { opacity:0; transform:scale(1.05); } to { opacity:1; transform:scale(1); } }
 .clockpage { display:flex; flex-direction:column; justify-content:flex-end; margin:auto auto 1.5rem; max-width:31.25rem; min-width:6.25rem; height:10vh; text-align:center; font-size:2rem; padding:.3125rem; font-weight:bold; border-bottom:.1875rem solid var(--clock); animation:slide-in-top 1s forwards; }
 .clock { font-variant-numeric:tabular-nums; } #dayOfWeek { display:block; color:var(--text_light); font-weight:normal; font-size:1rem; margin-bottom:.5rem; }
 #photo-grid { animation:fade-in 3s forwards; display:grid; grid-template-columns:repeat(3,300px); grid-gap:10px; margin-top:20px; }
 #photo-grid img { margin:-2.5px; width:300px; height:200px; object-fit:cover; background-color:var(--bg_main); }
 .cell { display:block; width:300px; height:200px; overflow:hidden; }
+.image-crossfade { position:relative; display:block; overflow:hidden; }
+.cell > .image-crossfade { width:100%; height:100%; }
+.image-crossfade > .image-transition-layer { position:absolute; top:0; left:0; }
+.image-crossfade > .image-transition-current { z-index:1; }
+.image-crossfade > .image-transition-outgoing { z-index:1; }
+.image-crossfade > .image-transition-incoming { z-index:2; opacity:0; transform:scale(1.05); }
+.image-crossfade > .image-transition-outgoing.is-active { animation:image-crossfade-out .7s ease-in forwards; }
+.image-crossfade > .image-transition-incoming.is-active { animation:image-crossfade-in .7s ease-in forwards; }
 .bottom-banner { color:var(--text_light); display:flex; justify-content:space-between; align-items:center; height:10vh; }
 .wcontainer, .wcontainer * { box-sizing:content-box; }
 form { animation:slide-in 1s forwards; display:flex; align-items:center; }

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { ImageDeck } from "@/components/image-deck";
+import { ImageCrossfade } from "@/components/image-crossfade";
 import type { GalleryImage } from "@/lib/gallery-assets";
 
 type Props = {
@@ -47,20 +48,14 @@ export function GalleryGrid({ images, size, refreshMs, thumbnail = false }: Prop
 
   return (
     <div id="photo-grid" className={thumbnail ? "cloud-grid" : ""}>
-      {visible.map((image) => (
-        <a
-          className="cell"
+      {visible.map((image, index) => (
+        <ImageCrossfade
+          key={index}
+          className="cell image-crossfade"
+          src={thumbnail ? image.thumbnailUrl : image.originalUrl}
           href={image.originalUrl}
-          key={image.id}
-          target="_blank"
-          rel="noreferrer"
-        >
-          <img
-            className="fade-in"
-            src={thumbnail ? image.thumbnailUrl : image.originalUrl}
-            alt="Gallery image"
-          />
-        </a>
+          alt="Gallery image"
+        />
       ))}
     </div>
   );

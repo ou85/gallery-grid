@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { ImageCrossfade } from "@/components/image-crossfade";
 
 const gridSize = 12;
 const imageCount = 50;
@@ -50,11 +51,14 @@ export function SmallGridGallery() {
 
   return (
     <div id="photo-grid">
-      {images.map((index) => (
-        <div className="cell" key={index}>
-          <a href={imageUrl(index)} target="_blank" rel="noreferrer">
-            <img src={imageUrl(index)} alt="Random image" />
-          </a>
+      {images.map((index, slot) => (
+        <div className="cell" key={slot}>
+          <ImageCrossfade
+            className="image-crossfade"
+            src={imageUrl(index)}
+            href={imageUrl(index)}
+            alt="Random image"
+          />
         </div>
       ))}
     </div>
