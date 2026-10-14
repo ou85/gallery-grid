@@ -6,19 +6,25 @@ export type GalleryImage = {
   id: string;
   originalUrl: string;
   thumbnailUrl: string;
+  listThumbnailUrl: string;
   createdAt: string;
   source: "legacy" | "gallery";
 };
 
 const toThumbnail = (url: string) => url.replace(
   "/image/upload/",
-  "/image/upload/c_scale,w_600,q_auto,f_auto/"
+  "/image/upload/c_scale,w_300,q_auto,f_auto/"
+);
+const toListThumbnail = (url: string) => url.replace(
+  "/image/upload/",
+  "/image/upload/c_fill,w_200,h_133,q_85,f_auto/"
 );
 
 const legacy: GalleryImage[] = legacyImages.map((originalUrl, index) => ({
   id: `legacy-${index}`,
   originalUrl,
   thumbnailUrl: toThumbnail(originalUrl),
+  listThumbnailUrl: toListThumbnail(originalUrl),
   createdAt: "",
   source: "legacy",
 }));
@@ -38,7 +44,14 @@ export const getCloudinaryGalleryImages = unstable_cache(async (): Promise<Galle
   const addAssets = (assets: any[]) => {
     for (const asset of assets) {
       if (!asset.secure_url || !asset.asset_id) continue;
-      images.push({ id: asset.asset_id, originalUrl: asset.secure_url, thumbnailUrl: toThumbnail(asset.secure_url), createdAt: asset.created_at ?? "", source: "gallery" });
+      images.push({
+        id: asset.asset_id,
+        originalUrl: asset.secure_url,
+        thumbnailUrl: toThumbnail(asset.secure_url),
+        listThumbnailUrl: toListThumbnail(asset.secure_url),
+        createdAt: asset.created_at ?? "",
+        source: "gallery",
+      });
     }
   };
 

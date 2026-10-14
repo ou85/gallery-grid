@@ -31,7 +31,7 @@ export default async function ListPage() {
                 target="_blank"
                 rel="noreferrer"
               >
-                <img src={image.originalUrl} alt="Gallery image" />
+                <img src={image.listThumbnailUrl} alt="Gallery image" loading="lazy" />
               </a>
             ))}
           </div>
