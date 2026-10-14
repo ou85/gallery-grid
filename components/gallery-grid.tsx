@@ -52,7 +52,7 @@ export function GalleryGrid({ images, size, refreshMs, thumbnail = false }: Prop
         <ImageCrossfade
           key={index}
           className="cell image-crossfade"
-          src={thumbnail ? image.thumbnailUrl : image.originalUrl}
+          src={image.thumbnailUrl}
           href={image.originalUrl}
           alt="Gallery image"
         />

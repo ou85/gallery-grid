@@ -64,6 +64,9 @@ ul, li { list-style-type:none; }
 [data-layout="cloud"] .clockpage { height:6.75rem; }
 [data-layout="cloud"] #photo-grid { justify-content:center; grid-template-columns:repeat(4,300px); }
 [data-layout="list"] { --list-grid-width:830px; position:static; top:auto; left:auto; transform:none; margin:0; display:block; height:100vh; max-height:none; overflow-y:auto; overflow-x:hidden; scrollbar-width:auto; }
+[data-layout="list"]::-webkit-scrollbar { display:block; width:12px; }
+[data-layout="list"]::-webkit-scrollbar-track { background:var(--bg_main); }
+[data-layout="list"]::-webkit-scrollbar-thumb { background:var(--text_med); border:3px solid var(--bg_main); border-radius:6px; }
 [data-layout="list"] .list-shell { min-height:100%; }
 [data-layout="list"] .list-content { width:var(--list-grid-width); margin:0 auto; }
 [data-layout="list"] .list-header {
