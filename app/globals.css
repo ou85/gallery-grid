@@ -25,6 +25,33 @@ a { color:var(--text_light); text-decoration:none; } a:visited { color:var(--tex
 .image-crossfade > .image-transition-incoming { z-index:2; opacity:0; transform:scale(1.05); }
 .image-crossfade > .image-transition-outgoing.is-active { animation:image-crossfade-out .7s ease-in forwards; }
 .image-crossfade > .image-transition-incoming.is-active { animation:image-crossfade-in .7s ease-in forwards; }
+.image-lightbox { width:min(96vw,1600px); max-width:96vw; max-height:96dvh; padding:1rem; border:1px solid var(--text_med); border-radius:8px; background:var(--bg_main); color:var(--text_light); }
+.image-lightbox::backdrop { background:rgba(0,0,0,.9); }
+.image-lightbox-content { display:flex; flex-direction:column; gap:.75rem; }
+.image-lightbox-actions { --action-size:2.25rem; display:flex; justify-content:flex-end; gap:.75rem; }
+.image-lightbox-actions button { 
+  display:inline-flex; 
+  align-items:center; 
+  justify-content:center; flex:none; 
+  height:var(--action-size); 
+  padding:0 1rem; 
+  border:1px solid var(--clock); 
+  border-radius:4px; 
+  background:var(--bg_main); 
+  color:var(--text_light); 
+  cursor:pointer; 
+  transition:background-color .2s ease,color .2s ease,box-shadow .2s ease,transform .2s ease; 
+}
+.image-lightbox-actions button:hover:not(:disabled) { background:var(--clock); color:var(--bg_main); box-shadow:0 0 0 .2rem rgba(85,196,159,.2); transform:translateY(-1px); }
+.image-lightbox-actions button:focus-visible { outline:2px solid var(--text_light); outline-offset:3px; }
+.image-lightbox-actions button:disabled { opacity:.6; cursor:wait; }
+.image-lightbox-actions .image-lightbox-close { position:relative; width:var(--action-size); padding:0; border-radius:50%; }
+.image-lightbox-close::before, .image-lightbox-close::after { position:absolute; top:50%; left:50%; width:1.1rem; height:2px; background:currentColor; content:""; }
+.image-lightbox-close::before { transform:translate(-50%,-50%) rotate(45deg); }
+.image-lightbox-close::after { transform:translate(-50%,-50%) rotate(-45deg); }
+.image-lightbox-content img { display:block; max-width:100%; max-height:calc(96dvh - 5rem); width:auto; height:auto; margin:auto; object-fit:contain; }
+.image-lightbox-content p { margin:0; color:var(--text_light); }
+.image-lightbox-content p a { color:var(--clock); text-decoration:underline; }
 .bottom-banner { color:var(--text_light); display:flex; justify-content:space-between; align-items:center; height:10vh; }
 .wcontainer, .wcontainer * { box-sizing:content-box; }
 form { animation:slide-in 1s forwards; display:flex; align-items:center; }

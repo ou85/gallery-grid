@@ -1,6 +1,7 @@
 import { v2 as cloudinary } from "cloudinary";
 import { unstable_cache } from "next/cache";
 import legacyImages from "@/images";
+import { galleryThumbnailUrl, listThumbnailUrl } from "@/lib/cloudinary-image-url";
 
 export type GalleryImage = {
   id: string;
@@ -11,20 +12,11 @@ export type GalleryImage = {
   source: "legacy" | "gallery";
 };
 
-const toThumbnail = (url: string) => url.replace(
-  "/image/upload/",
-  "/image/upload/c_scale,w_300,q_auto,f_auto/"
-);
-const toListThumbnail = (url: string) => url.replace(
-  "/image/upload/",
-  "/image/upload/c_fill,w_200,h_133,q_85,f_auto/"
-);
-
 const legacy: GalleryImage[] = legacyImages.map((originalUrl, index) => ({
   id: `legacy-${index}`,
   originalUrl,
-  thumbnailUrl: toThumbnail(originalUrl),
-  listThumbnailUrl: toListThumbnail(originalUrl),
+  thumbnailUrl: galleryThumbnailUrl(originalUrl),
+  listThumbnailUrl: listThumbnailUrl(originalUrl),
   createdAt: "",
   source: "legacy",
 }));
@@ -47,8 +39,8 @@ export const getCloudinaryGalleryImages = unstable_cache(async (): Promise<Galle
       images.push({
         id: asset.asset_id,
         originalUrl: asset.secure_url,
-        thumbnailUrl: toThumbnail(asset.secure_url),
-        listThumbnailUrl: toListThumbnail(asset.secure_url),
+        thumbnailUrl: galleryThumbnailUrl(asset.secure_url),
+        listThumbnailUrl: listThumbnailUrl(asset.secure_url),
         createdAt: asset.created_at ?? "",
         source: "gallery",
       });

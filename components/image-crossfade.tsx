@@ -11,9 +11,10 @@ type ImageFrame = {
 type Props = ImageFrame & {
   alt: string;
   className: string;
+  galleryModal?: boolean;
 };
 
-export function ImageCrossfade({ src, href, alt, className }: Props) {
+export function ImageCrossfade({ src, href, alt, className, galleryModal = false }: Props) {
   const [current, setCurrent] = useState<ImageFrame>(() => ({ src, href }));
   const [incoming, setIncoming] = useState<ImageFrame | null>(null);
   const [transitionStarted, setTransitionStarted] = useState(false);
@@ -61,7 +62,7 @@ export function ImageCrossfade({ src, href, alt, className }: Props) {
   };
 
   return (
-    <a className={className} href={incoming?.href ?? current.href} target="_blank" rel="noreferrer">
+    <a className={className} href={incoming?.href ?? current.href} data-gallery-image={galleryModal ? "true" : undefined} target="_blank" rel="noreferrer">
       <img
         className={`image-transition-layer ${incoming ? "image-transition-outgoing" : "image-transition-current"} ${transitionStarted ? "is-active" : ""}`}
         src={current.src}

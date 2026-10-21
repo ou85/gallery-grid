@@ -26,6 +26,7 @@ export function GalleryGrid({ images, size, refreshMs, thumbnail = false }: Prop
   useEffect(() => {
     let lastIndex = -1;
     const timer = window.setInterval(() => {
+      if (document.hidden || document.querySelector("dialog.image-lightbox[open]")) return;
       setVisible((current) => {
         if (!deck.current || current.length < 2) return current;
 
@@ -55,6 +56,7 @@ export function GalleryGrid({ images, size, refreshMs, thumbnail = false }: Prop
           src={image.thumbnailUrl}
           href={image.originalUrl}
           alt="Gallery image"
+          galleryModal
         />
       ))}
     </div>

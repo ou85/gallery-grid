@@ -22,6 +22,7 @@ export default async function GalleryPage() {
               <a
                 key={image.id}
                 href={image.originalUrl}
+                data-gallery-image="true"
                 target="_blank"
                 rel="noreferrer"
               >

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ServiceWorker } from "@/components/service-worker";
+import { ImageLightbox } from "@/components/image-lightbox";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -22,6 +23,7 @@ export default function RootLayout({
       </head>
       <body>
         {children}
+        <ImageLightbox />
         <ServiceWorker />
       </body>
     </html>
