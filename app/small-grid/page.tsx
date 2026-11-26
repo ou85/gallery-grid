@@ -1,13 +1,8 @@
 import { Clock, DayOfWeek } from "@/components/clock";
 import { SmallGridGallery } from "@/components/small-grid-gallery";
 import { WeatherWidget } from "@/components/weather";
-import { getWeather } from "@/lib/weather";
 
-export const dynamic = "force-dynamic";
-
-export default async function SmallGridPage() {
-  const weather = await getWeather("Stockholm");
-
+export default function SmallGridPage() {
   return (
     <main className="container" data-layout="small-grid">
       <div>
@@ -20,7 +15,7 @@ export default async function SmallGridPage() {
           </span>
         </div>
         <SmallGridGallery />
-        <WeatherWidget initialWeather={weather} />
+        <WeatherWidget />
       </div>
     </main>
   );

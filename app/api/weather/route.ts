@@ -1,10 +1,18 @@
 import { NextResponse } from "next/server";
-import { getWeather } from "@/lib/weather";
+import { getWeather, WeatherError } from "@/lib/weather";
 
 export async function GET(request: Request) {
-  const city = new URL(request.url).searchParams.get("city")?.trim().slice(0, 100);
-  if (!city) return NextResponse.json({ error: "Weather is unavailable" }, { status: 400 });
-  const weather = await getWeather(city);
-  if (!weather) return NextResponse.json({ error: "City not found" }, { status: 404 });
-  return NextResponse.json(weather);
+  const headers = { "Cache-Control": "no-store" };
+  const city = new URL(request.url).searchParams.get("city")?.trim().replace(/\s+/g, " ");
+  if (!city || city.length > 100) {
+    return NextResponse.json({ error: "Enter a city name up to 100 characters" }, { status: 400, headers });
+  }
+  try {
+    return NextResponse.json(await getWeather(city.toLowerCase()), { headers });
+  } catch (error) {
+    if (error instanceof WeatherError) {
+      return NextResponse.json({ error: error.message }, { status: error.status, headers });
+    }
+    return NextResponse.json({ error: "Weather is temporarily unavailable" }, { status: 500, headers });
+  }
 }

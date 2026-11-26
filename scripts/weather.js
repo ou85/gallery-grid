@@ -1,100 +1,83 @@
-//
-// TODO: 
-//      - Hide / Show weather widget.
-//
-// ======  Setting constants ========
-//
-let defaultCity = 'Stockholm';  //_________________________________________ Default city
-let refreshWeather = 15;        //_________________________________________ Page Refresh rate in minutes
-//
-//
-// ======  Fetching weather data ========
 const form = document.querySelector(".bottom-banner form");
 const input = document.querySelector(".bottom-banner input");
 const msg = document.querySelector(".bottom-banner .msg");
 const list = document.querySelector(".ajax-section .cities");
-const apiKey =  "935dab6fc9876743c9ec8fba2e687c63";
 
-// Create a single list item for the city
-const li = document.createElement("li");
-li.classList.add("city");
-list.appendChild(li);
+const item = document.createElement("li");
+item.className = "city";
+item.innerHTML = `
+  <div class="city-info">
+    <h2 class="city-name"><span></span><sup></sup></h2>
+    <div class="city-temp"><span></span><sup>°C</sup></div>
+    <figcaption></figcaption>
+    <figure><img class="city-icon" alt=""></figure>
+  </div>
+`;
+list.appendChild(item);
+item.hidden = true;
+input.maxLength = 100;
 
-// Function to fetch weather data
-function fetchWeather(city) {
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+function savedCity() {
+  const value = document.cookie.match(/(?:^|; )city=([^;]*)/)?.[1];
+  try {
+    const city = value ? decodeURIComponent(value).trim() : "";
+    return city && city.length <= 100 ? city : "Stockholm";
+  } catch {
+    return "Stockholm";
+  }
+}
 
-  fetch(url)
-    .then(response => response.json())
-    .then(data => {
-      const { main, name, sys, weather } = data;
-      const icon = `https://openweathermap.org/img/wn/${
-        weather[0]["icon"]
-      }@2x.png`;
+let currentCity = savedCity();
+let activeRequest;
 
-      const markup = `
-        <div class="city-info">
-          <h2 class="city-name" data-name="${name},${sys.country}">
-            <span>${name}</span>
-            <sup>${sys.country}</sup>
-          </h2>
-          <div class="city-temp">${Math.round(main.temp)}<sup>°C</sup></div>
-          <figcaption>${weather[0]["description"]}</figcaption>
-          <figure>
-            <img class="city-icon" src="${icon}" alt="${weather[0]["description"]}">
-          </figure>
-        </div>
-      `;
-      li.innerHTML = markup;
-    })
-    .catch(() => {
-      msg.textContent = "Please enter a city name";
+async function fetchWeather() {
+  activeRequest?.abort();
+  const request = new AbortController();
+  activeRequest = request;
+
+  try {
+    const response = await fetch(`/api/weather?city=${encodeURIComponent(currentCity)}`, {
+      signal: request.signal,
+      cache: "no-store",
     });
-}
+    if (!response.ok) {
+      if (!request.signal.aborted) {
+        msg.textContent = response.status === 404 ? "City not found" : "Weather is temporarily unavailable";
+      }
+      return;
+    }
 
-// Function to set a cookie
-function setCookie(name, value, days) {
-  let expires = "";
-  if (days) {
-    let date = new Date();
-    date.setTime(date.getTime() + (days*24*60*60*1000));
-    expires = "; expires=" + date.toUTCString();
+    const { main, name, sys, weather } = await response.json();
+    if (request.signal.aborted) return;
+
+    const heading = item.querySelector(".city-name");
+    heading.dataset.name = `${name},${sys.country}`;
+    heading.querySelector("span").textContent = name;
+    heading.querySelector("sup").textContent = sys.country;
+    item.querySelector(".city-temp span").textContent = Math.round(main.temp);
+    item.querySelector("figcaption").textContent = weather[0].description;
+    const icon = item.querySelector("img");
+    icon.src = `https://openweathermap.org/img/wn/${weather[0].icon}@2x.png`;
+    icon.alt = weather[0].description;
+    item.hidden = false;
+    msg.textContent = "";
+  } catch {
+    if (!request.signal.aborted) msg.textContent = "Weather is temporarily unavailable";
   }
-  document.cookie = name + "=" + (value || "")  + expires + "; SameSite=Lax; path=/";
 }
 
-// Function to get a cookie
-function getCookie(name) {
-  let nameEQ = name + "=";
-  let ca = document.cookie.split(';');
-  for(let i=0;i < ca.length;i++) {
-    let c = ca[i];
-    while (c.charAt(0)==' ') c = c.substring(1,c.length);
-    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-  }
-  return null;
-}
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const city = input.value.trim();
+  if (!city || city.length > 100) return;
 
-// Fetch weather data for default city
-let currentCity = getCookie('city') || defaultCity;
-fetchWeather(currentCity);
-
-form.addEventListener("submit", e => {
-  e.preventDefault();
-
-  currentCity = input.value;
-
-  // Save city in cookie for 1800 days
-  setCookie('city', currentCity, 1800);
-
-  fetchWeather(currentCity);
-
-  msg.textContent = "";
+  currentCity = city;
+  document.cookie = `city=${encodeURIComponent(city)}; max-age=155520000; SameSite=Lax; path=/`;
+  msg.textContent = "Loading weather…";
+  void fetchWeather();
   form.reset();
   input.focus();
 });
 
-// Update weather every X minutes
-setInterval(() => {
-  fetchWeather(currentCity);
-}, refreshWeather * 60 * 1000); 
+void fetchWeather();
+setInterval(fetchWeather, 900_000);

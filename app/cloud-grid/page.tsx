@@ -2,12 +2,11 @@ import { Clock, DayOfWeek } from "@/components/clock";
 import { GalleryGrid } from "@/components/gallery-grid";
 import { WeatherWidget } from "@/components/weather";
 import { getGalleryImages } from "@/lib/gallery-assets";
-import { getWeather } from "@/lib/weather";
 
 export const dynamic = "force-dynamic";
 
 export default async function CloudGridPage() {
-  const [images, weather] = await Promise.all([getGalleryImages(), getWeather("Stockholm")]);
+  const images = await getGalleryImages();
 
   return (
     <main className="container" data-layout="cloud">
@@ -22,7 +21,7 @@ export default async function CloudGridPage() {
         </div>
         <GalleryGrid images={images} size={12} refreshMs={15_000} thumbnail />
         <div id="error-message" />
-        <WeatherWidget initialWeather={weather} />
+        <WeatherWidget />
       </div>
     </main>
   );
