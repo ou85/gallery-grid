@@ -200,6 +200,10 @@ ul, li { list-style-type:none; }
   }
 }
 
+@media (max-width:360px) {
+  [data-layout="main"] #photo-grid { grid-template-columns:minmax(0, 1fr); }
+}
+
 @media (min-width:760px) and (max-width:840px) and (max-height:640px) {
   [data-layout="small-grid"] .clockpage { height:auto; margin:0 auto 8px; padding:.25rem; }
   [data-layout="small-grid"] #photo-grid { width:min(744px, calc(100vw - 24px)); grid-template-columns:repeat(4, minmax(0, 1fr)); grid-gap:8px; margin-top:10px; }

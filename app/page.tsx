@@ -19,7 +19,7 @@ export default async function HomePage() {
             <DayOfWeek />
           </span>
         </div>
-        <GalleryGrid images={images} size={9} refreshMs={30_000} />
+        <GalleryGrid images={images} size={9} twoColumnSize={8} refreshMs={30_000} />
         <WeatherWidget />
       </div>
     </main>
