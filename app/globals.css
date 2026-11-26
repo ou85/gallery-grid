@@ -10,6 +10,7 @@ a { color:var(--text_light); text-decoration:none; } a:visited { color:var(--tex
 @keyframes slide-in { from { transform:translateX(100%); } to { transform:translateX(0); } }
 @keyframes slide-in-left { from { transform:translateX(-100%); } to { transform:translateX(0); } }
 @keyframes fade-in { from { opacity:.1; transform:scale(1.05); } to { opacity:1; transform:scale(1); } }
+@keyframes fade-in-opacity { from { opacity:.1; } to { opacity:1; } }
 @keyframes image-crossfade-out { from { opacity:1; } to { opacity:0; } }
 @keyframes image-crossfade-in { from { opacity:0; transform:scale(1.05); } to { opacity:1; transform:scale(1); } }
 .clockpage { display:flex; flex-direction:column; justify-content:flex-end; margin:auto auto 1.5rem; max-width:31.25rem; min-width:6.25rem; height:10vh; text-align:center; font-size:2rem; padding:.3125rem; font-weight:bold; border-bottom:.1875rem solid var(--clock); animation:slide-in-top 1s forwards; }
@@ -121,11 +122,84 @@ ul, li { list-style-type:none; }
 [data-layout="list"] #photo-grid img { margin:-2.5px; width:200px; height:133px; object-fit:cover; background-position:center; }
 .list-year { border-top:1px solid seashell; border-bottom:1px solid seashell; height:4rem; margin:1rem 0; }
 #error-message { color:palevioletred; text-align:center; width:100%; }
-@media (max-width:1200px) { [data-layout="small-grid"] #photo-grid { grid-template-columns:repeat(4,200px); } [data-layout="cloud"] #photo-grid { grid-template-columns:repeat(3,300px); } [data-layout="list"] { --list-grid-width:620px; } [data-layout="list"] #photo-grid { grid-template-columns:repeat(3,200px); } }
-@media (max-width:900px) { [data-layout="small-grid"] #photo-grid { grid-template-columns:repeat(3,200px); } [data-layout="cloud"] #photo-grid { grid-template-columns:repeat(2,300px); } [data-layout="list"] { --list-grid-width:410px; } [data-layout="list"] #photo-grid { grid-template-columns:repeat(2,200px); } }
-@media (max-width:900px) { [data-layout="list"] .list-header-content { flex-direction:column; align-items:stretch; gap:.5rem; } [data-layout="list"] .home-link { align-self:flex-start; } }
-@media (max-width:600px) { [data-layout="small-grid"] #photo-grid { grid-template-columns:repeat(2,200px); } [data-layout="cloud"] #photo-grid { grid-template-columns:580px; } [data-layout="cloud"] #photo-grid img, [data-layout="cloud"] .cell { width:580px; } [data-layout="list"] #photo-grid { grid-template-columns:410px; } [data-layout="list"] #photo-grid img { width:410px; } }
-@media (max-width:640px) { [data-layout="small-grid"] #photo-grid { grid-template-columns:repeat(2,200px); } }
+@media (max-width:944px) {
+  [data-layout="main"] { width:calc(100% - 24px); }
+  [data-layout="main"] > div { width:100%; }
+  [data-layout="main"] #photo-grid {
+    animation-name:fade-in-opacity;
+    grid-template-columns:repeat(3, minmax(0, 1fr));
+  }
+  [data-layout="main"] .cell { width:100%; height:auto; aspect-ratio:3 / 2; }
+  [data-layout="main"] #photo-grid img { width:100%; height:100%; margin:0; }
+}
+
+@media (max-width:1254px) {
+  [data-layout="cloud"] > .cloud-content {
+    width:min(var(--cloud-grid-width, 1230px), calc(100% - 24px));
+  }
+  [data-layout="cloud"] #photo-grid {
+    animation-name:fade-in-opacity;
+    grid-template-columns:repeat(var(--cloud-columns, 4), minmax(0, 1fr));
+  }
+  [data-layout="cloud"] .cell { width:100%; height:auto; aspect-ratio:3 / 2; }
+  [data-layout="cloud"] #photo-grid img { width:100%; height:100%; margin:0; }
+}
+
+@media (max-width:1200px) {
+  [data-layout="cloud"] { --cloud-grid-width:920px; --cloud-columns:3; }
+  [data-layout="list"] { --list-grid-width:620px; }
+  [data-layout="list"] #photo-grid { grid-template-columns:repeat(3,200px); }
+}
+
+@media (max-width:900px) {
+  [data-layout="cloud"] { --cloud-grid-width:610px; --cloud-columns:2; }
+  [data-layout="small-grid"] #photo-grid { grid-template-columns:repeat(3,200px); }
+  [data-layout="list"] { --list-grid-width:410px; }
+  [data-layout="list"] #photo-grid { grid-template-columns:repeat(2,200px); }
+  [data-layout="list"] .list-header-content { flex-direction:column; align-items:stretch; gap:.5rem; }
+  [data-layout="list"] .home-link { align-self:flex-start; }
+}
+
+@media (max-width:640px) {
+  [data-layout="main"] #photo-grid { grid-template-columns:repeat(2, minmax(0, 1fr)); }
+
+  [data-layout="small-grid"] { width:min(410px, calc(100% - 24px)); }
+  [data-layout="small-grid"] > div { width:100%; }
+  [data-layout="small-grid"] #photo-grid {
+    animation-name:fade-in-opacity;
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+  }
+  [data-layout="small-grid"] .cell { width:100%; height:auto; aspect-ratio:4 / 3; }
+  [data-layout="small-grid"] #photo-grid img { width:100%; height:100%; margin:0; }
+
+  .bottom-banner { height:auto; flex-wrap:wrap; padding-bottom:12px; }
+  .bottom-banner .ajax-section { min-width:0; min-height:0; margin:12px 0; }
+  .bottom-banner .city-info { flex-wrap:wrap; gap:8px; overflow-wrap:anywhere; }
+  .bottom-banner .city-info figure { margin:0; }
+  .bottom-banner form { flex-wrap:wrap; margin-right:0; }
+  .bottom-banner form, .bottom-banner .city { animation-name:fade-in-opacity; }
+  .bottom-banner form .msg { position:static; flex-basis:100%; min-height:0; }
+}
+
+@media (max-width:600px) {
+  [data-layout="cloud"] { --cloud-grid-width:580px; --cloud-columns:1; }
+
+  [data-layout="list"] .list-content { width:min(410px, calc(100% - 24px)); }
+  [data-layout="list"] .list-header-content { width:min(410px, 100%); }
+  [data-layout="list"] .list-header::after { width:min(410px, calc(100% - 24px)); }
+  [data-layout="list"] #photo-grid {
+    animation-name:fade-in-opacity;
+    grid-template-columns:minmax(0, 1fr);
+  }
+  [data-layout="list"] #photo-grid img {
+    display:block;
+    width:100%;
+    height:auto;
+    aspect-ratio:3 / 2;
+    margin:0;
+  }
+}
+
 @media (min-width:760px) and (max-width:840px) and (max-height:640px) {
   [data-layout="small-grid"] .clockpage { height:auto; margin:0 auto 8px; padding:.25rem; }
   [data-layout="small-grid"] #photo-grid { width:min(744px, calc(100vw - 24px)); grid-template-columns:repeat(4, minmax(0, 1fr)); grid-gap:8px; margin-top:10px; }
