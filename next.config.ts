@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: { remotePatterns: [{ protocol: "https", hostname: "res.cloudinary.com" }] },
-  experimental: { useTypeScriptCli: false },
+  experimental: { useTypeScriptCli: false, agentUpgrade: "security" },
   allowedDevOrigins: ["localhost", "127.0.0.1", "192.168.117.192"],
   async redirects() {
     return [
