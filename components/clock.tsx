@@ -17,8 +17,20 @@ function getLocalTime() {
   return `${hours}:${minutes}`;
 }
 
-export function Clock() {
+export function Clock({ fixedDigits = false }: { fixedDigits?: boolean }) {
   const time = useSyncExternalStore(subscribeToClock, getLocalTime, () => "--:--");
+  if (fixedDigits) {
+    return (
+      <time className="time-grid-time" dateTime={time === "--:--" ? undefined : time}>
+        <span className="time-grid-time-label">{time}</span>
+        <span className="time-grid-digits" aria-hidden="true">
+          {[...time].map((character, position) => (
+            <span key={position}>{character}</span>
+          ))}
+        </span>
+      </time>
+    );
+  }
   return <>{time}</>;
 }
 

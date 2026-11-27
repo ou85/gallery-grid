@@ -108,6 +108,8 @@ ul, li { list-style-type:none; }
   .time-grid-card-surface[data-departing] { animation:none; }
 }
 .time-grid-time { font-size:clamp(1.5rem, 22cqi, 3.5rem); font-weight:700; font-variant-numeric:tabular-nums; line-height:1; }
+.time-grid-digits { display:grid; grid-template-columns:repeat(2,.65em) .32em repeat(2,.65em); justify-items:center; }
+.time-grid-time-label { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
 .time-grid-date {
   display:grid;
   place-content:center;

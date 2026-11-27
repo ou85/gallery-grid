@@ -24,7 +24,7 @@ export function TimeGridCard({
         }}
       >
         {card === "time"
-          ? <span className="time-grid-time"><Clock /></span>
+          ? <Clock fixedDigits />
           : <CalendarDate />}
       </span>
     </a>
