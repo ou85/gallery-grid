@@ -17,7 +17,25 @@ a { color:var(--text_light); text-decoration:none; } a:visited { color:var(--tex
 .clock { font-variant-numeric:tabular-nums; } #dayOfWeek { display:block; color:var(--text_light); font-weight:normal; font-size:1rem; margin-bottom:.5rem; }
 .clock-display { display:inline-grid; justify-items:center; font-variant-numeric:tabular-nums; }
 .clock-display[data-clock-layout="digits"] { grid-template-columns:repeat(2,.65em) .32em repeat(2,.65em); }
-.clock-display[data-clock-layout="groups"] { grid-template-columns:1.3em .32em 1.3em; }
+.clock-display[data-clock-layout="groups"] { grid-template-columns:1.1em .65em 1.1em; align-items:center; line-height:1; }
+.clock-round-colon {
+  box-sizing:content-box;
+  display:inline-flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  width:.65em;
+  height:1em;
+  gap:.25em;
+  transform: translateY(.08em);
+}
+.clock-round-colon::before, .clock-round-colon::after {
+  content:"";
+  width:.15em;
+  height:.15em;
+  border-radius:50%;
+  background:currentColor;
+}
 .clock-label { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
 #photo-grid { animation:fade-in 3s forwards; display:grid; grid-template-columns:repeat(3,300px); grid-gap:10px; margin-top:20px; }
 #photo-grid img { margin:-2.5px; width:300px; height:200px; object-fit:cover; background-color:var(--bg_main); }

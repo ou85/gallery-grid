@@ -25,9 +25,9 @@ export function Clock({ layout, className }: { layout?: "digits" | "groups"; cla
       <time className={className} dateTime={time === "--:--" ? undefined : time}>
         <span className="clock-label">{time}</span>
         <span className="clock-display" data-clock-layout={layout} aria-hidden="true">
-          {parts.map((part, position) => (
-            <span key={position}>{part}</span>
-          ))}
+          {parts.map((part, position) => layout === "groups" && position === 1
+            ? <span key={position} className="clock-round-colon" />
+            : <span key={position}>{part}</span>)}
         </span>
       </time>
     );
