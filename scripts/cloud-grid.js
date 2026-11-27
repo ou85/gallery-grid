@@ -21,7 +21,7 @@ const getVisibleUrls = (exceptCell) => [...photoGrid.querySelectorAll(".cell")]
   .filter((cell) => cell !== exceptCell)
   .map((cell) => cell.querySelector("img").dataset.originalUrl);
 
-const useFallback = (image, link) => {
+const showFallback = (image, link) => {
   const fallback = fallbackImages[Math.floor(Math.random() * fallbackImages.length)];
   image.onerror = null;
   image.dataset.originalUrl = fallback;
@@ -35,7 +35,7 @@ const createImageLink = (imageUrl) => {
 
   image.classList.add("fade-in");
   image.dataset.originalUrl = imageUrl;
-  image.onerror = () => useFallback(image, link);
+  image.onerror = () => showFallback(image, link);
   image.src = thumbnailUrl(imageUrl);
   link.href = imageUrl;
   link.appendChild(image);
@@ -63,7 +63,7 @@ setInterval(() => {
   lastUpdatedIndex = randomIndex;
   image.classList.remove("fade-in");
   image.dataset.originalUrl = imageUrl;
-  image.onerror = () => useFallback(image, link);
+  image.onerror = () => showFallback(image, link);
   image.src = thumbnailUrl(imageUrl);
   link.href = imageUrl;
 

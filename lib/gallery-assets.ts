@@ -12,6 +12,17 @@ export type GalleryImage = {
   source: "legacy" | "gallery";
 };
 
+type CloudinaryAsset = {
+  asset_id?: string;
+  secure_url?: string;
+  created_at?: string;
+};
+
+type CloudinaryPage = {
+  resources?: CloudinaryAsset[];
+  next_cursor?: string;
+};
+
 const legacy: GalleryImage[] = legacyImages.map((originalUrl, index) => ({
   id: `legacy-${index}`,
   originalUrl,
@@ -33,7 +44,7 @@ export const getCloudinaryGalleryImages = unstable_cache(async (): Promise<Galle
   const images: GalleryImage[] = [];
   let nextCursor: string | undefined;
 
-  const addAssets = (assets: any[]) => {
+  const addAssets = (assets: CloudinaryAsset[]) => {
     for (const asset of assets) {
       if (!asset.secure_url || !asset.asset_id) continue;
       images.push({
@@ -50,7 +61,7 @@ export const getCloudinaryGalleryImages = unstable_cache(async (): Promise<Galle
   const listByPrefix = async () => {
     nextCursor = undefined;
     do {
-      const response: any = await cloudinary.api.resources({
+      const response: CloudinaryPage = await cloudinary.api.resources({
         resource_type: "image", type: "upload", prefix: `${folder}/`, max_results: 500, next_cursor: nextCursor,
       });
       addAssets(response.resources ?? []);
@@ -68,13 +79,13 @@ export const getCloudinaryGalleryImages = unstable_cache(async (): Promise<Galle
     }
   } else try {
     do {
-      const response: any = await cloudinary.api.resources_by_asset_folder(folder, {
+      const response: CloudinaryPage = await cloudinary.api.resources_by_asset_folder(folder, {
         resource_type: "image", type: "upload", max_results: 500, next_cursor: nextCursor,
       });
       addAssets(response.resources ?? []);
       nextCursor = response.next_cursor;
     } while (nextCursor);
-  } catch (error) {
+  } catch {
     // Legacy fixed-folder accounts (including older Free plans) do not support
     // asset-folder listing. Their folder name is part of the public ID instead.
     console.warn("Asset-folder lookup failed; trying public-ID prefix.");

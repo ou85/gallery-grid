@@ -10,6 +10,7 @@ export default async function GalleryPage() {
       <div className="list-shell">
         <header className="list-header">
           <div className="list-header-content">
+            {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- Preserve document navigation for the offline service worker. */}
             <a className="home-link" href="/">
               Home
             </a>

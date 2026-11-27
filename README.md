@@ -4,8 +4,10 @@ Next.js gallery with a rotating grid, Cloudinary integration, weather, PWA cachi
 
 ## Run locally
 
+Use Node.js 24 LTS and npm.
+
 ```sh
-npm install
+npm ci
 cp .env.example .env.local
 npm run dev
 ```
@@ -44,6 +46,10 @@ Legacy bookmark routes redirect to the new Next.js routes:
 ## Checks
 
 ```sh
-npx tsc --noEmit
+npm run lint
+npm test
 npm run build
 ```
+
+The tests use the built-in Node.js runner. They cover the weather API with a mocked provider,
+image deck rotation, and service worker cache behavior. No API keys or external requests are needed.
