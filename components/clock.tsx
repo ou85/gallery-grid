@@ -3,6 +3,7 @@
 import { useSyncExternalStore } from "react";
 
 const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const dateFormat = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric" });
 
 function subscribeToClock(onChange: () => void) {
   const timer = window.setInterval(onChange, 1_000);
@@ -28,4 +29,20 @@ export function DayOfWeek() {
     () => "—",
   );
   return <>{day}</>;
+}
+
+export function CalendarDate() {
+  const dayStart = useSyncExternalStore(
+    subscribeToClock,
+    () => new Date().setHours(0, 0, 0, 0),
+    () => null,
+  );
+  const date = dayStart === null ? null : new Date(dayStart);
+
+  return (
+    <span className="time-grid-date">
+      <span className="time-grid-weekday">{date ? dayNames[date.getDay()] : "—"}</span>
+      <span className="time-grid-date-label">{date ? dateFormat.format(date) : "—"}</span>
+    </span>
+  );
 }

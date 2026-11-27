@@ -12,8 +12,7 @@ export default async function CloudGridPage() {
     <main className="container" data-layout="cloud">
       <div className="cloud-content">
         <div className="clockpage">
-          {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- Preserve document navigation for the offline service worker. */}
-          <a id="clock" href="/" style={{ fontSize: "3.5rem" }}>
+          <a id="clock" href="/time-grid" style={{ fontSize: "3.5rem" }}>
             <Clock />
           </a>
           <a id="dayOfWeek" href="/list">

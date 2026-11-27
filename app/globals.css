@@ -91,6 +91,28 @@ ul, li { list-style-type:none; }
 [data-layout="cloud"] > .cloud-content { width:max-content; max-width:100%; margin-top:auto; margin-bottom:auto; }
 [data-layout="cloud"] .clockpage { height:6.75rem; }
 [data-layout="cloud"] #photo-grid { justify-content:center; grid-template-columns:repeat(4,300px); }
+.time-grid-card {
+  display:grid;
+  place-items:center;
+  container-type:inline-size;
+  text-align:center;
+}
+.time-grid-card[data-time-card="time"] { background:linear-gradient(135deg,#1c1035,#390f1d); }
+.time-grid-card[data-time-card="date"] { background:linear-gradient(135deg,#111631,#252052); }
+.time-grid-card:focus-visible { outline:2px solid var(--text_light); outline-offset:-4px; }
+.time-grid-time { font-size:clamp(1.5rem, 22cqi, 3.5rem); font-weight:700; font-variant-numeric:tabular-nums; line-height:1; }
+.time-grid-date {
+  display:grid;
+  place-content:center;
+  justify-items:center;
+  width:66.667%;
+  height:66.667%;
+  gap:.25rem;
+  line-height:1.1;
+  white-space:nowrap;
+}
+.time-grid-weekday { font-size:clamp(.75rem, 8cqi, 1.5rem); font-weight:700; text-transform:uppercase; }
+.time-grid-date-label { font-size:clamp(.75rem, 7cqi, 1.25rem); }
 [data-layout="list"] { --list-grid-width:830px; position:static; top:auto; left:auto; transform:none; margin:0; display:block; height:100vh; max-height:none; overflow-y:auto; overflow-x:hidden; scrollbar-width:auto; }
 [data-layout="list"]::-webkit-scrollbar { display:block; width:12px; }
 [data-layout="list"]::-webkit-scrollbar-track { background:var(--bg_main); }

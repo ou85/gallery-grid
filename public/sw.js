@@ -1,7 +1,7 @@
 const PAGE_CACHE = "gallery-grid-next-v2-pages";
 const ASSET_CACHE = "gallery-grid-next-v2-assets";
 const OLD_CACHES = ["gallery-grid-next-v1", "gallery-grid-shell-v2", "gallery-grid-runtime-v2"];
-const PAGES = new Set(["/", "/cloud-grid", "/gallery", "/list", "/small-grid"]);
+const PAGES = new Set(["/", "/cloud-grid", "/time-grid", "/gallery", "/list", "/small-grid"]);
 const ASSET_LIMIT = 80;
 
 self.addEventListener("install", (event) => event.waitUntil(self.skipWaiting()));
