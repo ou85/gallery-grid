@@ -19,20 +19,21 @@ function getLocalTime() {
 
 export function Clock({ layout, className }: { layout?: "digits" | "groups"; className?: string }) {
   const time = useSyncExternalStore(subscribeToClock, getLocalTime, () => "--:--");
-  if (layout) {
-    const parts = layout === "digits" ? [...time] : [time.slice(0, 2), ":", time.slice(3)];
-    return (
-      <time className={className} dateTime={time === "--:--" ? undefined : time}>
-        <span className="clock-label">{time}</span>
-        <span className="clock-display" data-clock-layout={layout} aria-hidden="true">
-          {parts.map((part, position) => layout === "groups" && position === 1
+  const clockLayout = layout ?? "groups";
+  const parts = clockLayout === "digits" ? [...time] : [time.slice(0, 2), ":", time.slice(3)];
+  return (
+    <time className={className} dateTime={time === "--:--" ? undefined : time}>
+      <span className="clock-label">{time}</span>
+      <span className="clock-display" data-clock-layout={clockLayout} aria-hidden="true">
+        {parts.map((part, position) => {
+          const isColon = clockLayout === "groups" ? position === 1 : position === 2;
+          return isColon
             ? <span key={position} className="clock-round-colon" />
-            : <span key={position}>{part}</span>)}
-        </span>
-      </time>
-    );
-  }
-  return <>{time}</>;
+            : <span key={position}>{part}</span>;
+        })}
+      </span>
+    </time>
+  );
 }
 
 export function DayOfWeek() {
