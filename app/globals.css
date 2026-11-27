@@ -241,6 +241,14 @@ ul, li { list-style-type:none; }
   }
 }
 
+@media (360px < width <= 600px) {
+  [data-layout="cloud"].time-grid-page { --cloud-columns:2; }
+}
+
+@media (800px < width <= 900px) {
+  [data-layout="cloud"].time-grid-page { --cloud-grid-width:920px; --cloud-columns:3; }
+}
+
 @media (max-width:360px) {
   [data-layout="main"] #photo-grid { grid-template-columns:minmax(0, 1fr); }
 }

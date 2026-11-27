@@ -10,7 +10,7 @@ export default async function TimeGridPage() {
   const images = await getGalleryImages();
 
   return (
-    <main className="container" data-layout="cloud">
+    <main className="container time-grid-page" data-layout="cloud">
       <div className="cloud-content">
         <GalleryGrid images={images} size={10} refreshMs={15_000} timeCards />
         <WeatherWidget />
