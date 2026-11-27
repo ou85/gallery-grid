@@ -18,53 +18,38 @@ type Props = ImageFrame & {
 
 export function ImageCrossfade({ src, href, alt, className, galleryModal = false, onSettled, swapOverlay }: Props) {
   const [current, setCurrent] = useState<ImageFrame>(() => ({ src, href }));
-  const [incoming, setIncoming] = useState<ImageFrame | null>(null);
-  const [transitionStarted, setTransitionStarted] = useState(false);
-  const settleRef = useRef<((displayed: boolean) => void) | null>(null);
+  const [loaded, setLoaded] = useState<ImageFrame | null>(null);
+  const settleRef = useRef<{ frame: ImageFrame; settle: (displayed: boolean) => void } | null>(null);
+  const incoming = loaded?.src === src && loaded.href === href ? loaded : null;
 
   useEffect(() => {
     if (src === current.src && href === current.href) return;
 
     let cancelled = false;
     let settled = false;
-    let transitionQueued = false;
-    let animationFrame: number | undefined;
     let timeout: number;
     const next = { src, href };
     const preload = new window.Image();
-
-    setIncoming(null);
-    setTransitionStarted(false);
 
     const settle = (displayed: boolean) => {
       if (cancelled || settled) return;
       settled = true;
       window.clearTimeout(timeout);
       if (displayed) setCurrent(next);
-      setIncoming(null);
-      setTransitionStarted(false);
+      setLoaded(null);
       onSettled?.(displayed);
     };
-    settleRef.current = settle;
+    settleRef.current = { frame: next, settle };
     timeout = window.setTimeout(() => settle(false), 10_000);
 
-    const startTransition = () => {
-      if (cancelled || settled || transitionQueued) return;
-      transitionQueued = true;
-      setIncoming(next);
-      animationFrame = window.requestAnimationFrame(() => {
-        if (cancelled || settled) return;
-        setTransitionStarted(true);
-        window.clearTimeout(timeout);
-        timeout = window.setTimeout(() => settle(true), 1_000);
-      });
+    preload.onload = () => {
+      if (cancelled || settled) return;
+      setLoaded(next);
+      window.clearTimeout(timeout);
+      timeout = window.setTimeout(() => settle(true), 1_000);
     };
-
-    preload.onload = startTransition;
     preload.onerror = () => settle(false);
     preload.src = src;
-
-    if (preload.complete && preload.naturalWidth > 0) startTransition();
 
     return () => {
       cancelled = true;
@@ -72,14 +57,12 @@ export function ImageCrossfade({ src, href, alt, className, galleryModal = false
       preload.onload = null;
       preload.onerror = null;
       window.clearTimeout(timeout);
-      if (animationFrame !== undefined) {
-        window.cancelAnimationFrame(animationFrame);
-      }
     };
   }, [src, href, current.src, current.href, onSettled]);
 
-  const finishTransition = (event: AnimationEvent<HTMLImageElement>) => {
-    if (event.animationName === "image-crossfade-in") settleRef.current?.(true);
+  const finishTransition = (frame: ImageFrame, displayed: boolean) => {
+    const pending = settleRef.current;
+    if (pending?.frame === frame) pending.settle(displayed);
   };
 
   return (
@@ -92,17 +75,20 @@ export function ImageCrossfade({ src, href, alt, className, galleryModal = false
       rel="noreferrer"
     >
       <img
-        className={`image-transition-layer ${incoming ? "image-transition-outgoing" : "image-transition-current"} ${transitionStarted ? "is-active" : ""}`}
+        className={`image-transition-layer ${incoming ? "image-transition-outgoing is-active" : "image-transition-current"}`}
         src={current.src}
         alt={alt}
       />
       {incoming && (
         <img
-          className={`image-transition-layer image-transition-incoming ${transitionStarted ? "is-active" : ""}`}
+          key={incoming.src}
+          className="image-transition-layer image-transition-incoming is-active"
           src={incoming.src}
           alt={alt}
-          onError={() => settleRef.current?.(false)}
-          onAnimationEnd={finishTransition}
+          onError={() => finishTransition(incoming, false)}
+          onAnimationEnd={(event: AnimationEvent<HTMLImageElement>) => {
+            if (event.animationName === "image-crossfade-in") finishTransition(incoming, true);
+          }}
         />
       )}
       {swapOverlay}

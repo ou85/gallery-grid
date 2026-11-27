@@ -21,11 +21,7 @@ export function WeatherWidget() {
   const [message, setMessage] = useState("Loading weather…");
 
   useEffect(() => {
-    setSelection({ city: savedCity() });
-  }, []);
-
-  useEffect(() => {
-    if (!selection) return;
+    const city = selection?.city ?? savedCity();
     const controller = new AbortController();
     let pending = false;
 
@@ -34,7 +30,7 @@ export function WeatherWidget() {
       pending = true;
       try {
         const response = await fetch(
-          `/api/weather?city=${encodeURIComponent(selection.city)}`,
+          `/api/weather?city=${encodeURIComponent(city)}`,
           { signal: controller.signal, cache: "no-store" },
         );
         if (!response.ok) {

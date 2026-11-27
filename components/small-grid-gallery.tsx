@@ -6,6 +6,7 @@ import { ImageCrossfade } from "@/components/image-crossfade";
 const gridSize = 12;
 const imageCount = 50;
 const imageUrl = (index: number) => `https://picsum.photos/300/200?random=${index}`;
+const initialImages = Array.from({ length: gridSize }, (_, index) => index);
 
 function shuffledIndexes() {
   const indexes = Array.from({ length: imageCount }, (_, index) => index);
@@ -17,33 +18,27 @@ function shuffledIndexes() {
 }
 
 export function SmallGridGallery() {
-  const [images, setImages] = useState(() =>
-    Array.from({ length: gridSize }, (_, index) => index),
-  );
+  const [images, setImages] = useState(initialImages);
 
   useEffect(() => {
-    let deck = shuffledIndexes();
-    let deckIndex = 0;
-    const nextImage = () => {
-      if (deckIndex >= deck.length) {
-        deck = shuffledIndexes();
-        deckIndex = 0;
-      }
-      return deck[deckIndex++];
-    };
-
-    setImages(Array.from({ length: gridSize }, nextImage));
-
+    let visible = initialImages;
+    let deck = shuffledIndexes().filter((index) => !initialImages.includes(index));
     let lastUpdatedIndex = -1;
     const timer = window.setInterval(() => {
-      setImages((current) => {
-        let index = Math.floor(Math.random() * current.length);
-        if (index === lastUpdatedIndex) index = (index + 1) % current.length;
-        lastUpdatedIndex = index;
-        return current.map((image, currentIndex) =>
-          currentIndex === index ? nextImage() : image,
-        );
-      });
+      const isAvailable = (image: number) => !visible.includes(image);
+      let candidate = deck.findIndex(isAvailable);
+      if (candidate === -1) {
+        deck = shuffledIndexes();
+        candidate = deck.findIndex(isAvailable);
+      }
+      if (candidate === -1) return;
+
+      let index = Math.floor(Math.random() * visible.length);
+      if (index === lastUpdatedIndex) index = (index + 1) % visible.length;
+      lastUpdatedIndex = index;
+      const [nextImage] = deck.splice(candidate, 1);
+      visible = visible.map((image, slot) => slot === index ? nextImage : image);
+      setImages(visible);
     }, 15_000);
 
     return () => window.clearInterval(timer);

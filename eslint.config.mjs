@@ -23,9 +23,4 @@ export default defineConfig([
     ],
     rules: { "@next/next/no-img-element": "off" },
   },
-  {
-    // Keep existing mount and transition code visible for a separate React cleanup.
-    files: ["components/{image-crossfade,small-grid-gallery,weather}.tsx"],
-    rules: { "react-hooks/set-state-in-effect": "warn" },
-  },
 ]);
