@@ -1,6 +1,7 @@
 import { v2 as cloudinary } from "cloudinary";
 import { unstable_cache } from "next/cache";
 import legacyImages from "@/images";
+import { getCloudinaryFolder } from "@/lib/cloudinary-folder";
 import { galleryThumbnailUrl, listThumbnailUrl } from "@/lib/cloudinary-image-url";
 
 export type GalleryImage = {
@@ -40,7 +41,7 @@ export const getCloudinaryGalleryImages = unstable_cache(async (): Promise<Galle
   if (!cloudName || !apiKey || !apiSecret) return [];
 
   cloudinary.config({ cloud_name: cloudName, api_key: apiKey, api_secret: apiSecret, secure: true });
-  const folder = process.env.CLOUDINARY_GALLERY_FOLDER || process.env.CLOUDINARY_FOLDER || "gallery";
+  const { folder, lookup } = getCloudinaryFolder();
   const images: GalleryImage[] = [];
   let nextCursor: string | undefined;
 
@@ -69,9 +70,7 @@ export const getCloudinaryGalleryImages = unstable_cache(async (): Promise<Galle
     } while (nextCursor);
   };
 
-  // CLOUDINARY_FOLDER is the fixed-folder convention used by this project.
-  // It is also the compatible choice for the current Cloudinary Free setup.
-  if (process.env.CLOUDINARY_FOLDER && !process.env.CLOUDINARY_GALLERY_FOLDER) {
+  if (lookup === "public-id-prefix") {
     try {
       await listByPrefix();
     } catch {

@@ -1,6 +1,7 @@
 import { createHash, timingSafeEqual } from "node:crypto";
 import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
+import { getCloudinaryFolder } from "@/lib/cloudinary-folder";
 
 export const runtime = "nodejs";
 
@@ -21,7 +22,8 @@ export async function POST(request: Request) {
   }
 
   const payload = JSON.parse(body) as { asset_folder?: string };
-  if (payload.asset_folder === (process.env.CLOUDINARY_GALLERY_FOLDER || "gallery")) {
+  const { folder } = getCloudinaryFolder();
+  if (payload.asset_folder === folder) {
     revalidateTag("gallery-assets", "max");
   }
   return NextResponse.json({ revalidated: true });
