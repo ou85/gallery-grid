@@ -24,6 +24,11 @@ type CloudinaryPage = {
   next_cursor?: string;
 };
 
+type CloudinaryCatalogue = {
+  images: GalleryImage[];
+  status: "available" | "unconfigured" | "unavailable";
+};
+
 const legacy: GalleryImage[] = legacyImages.map((originalUrl, index) => ({
   id: `legacy-${index}`,
   originalUrl,
@@ -33,20 +38,14 @@ const legacy: GalleryImage[] = legacyImages.map((originalUrl, index) => ({
   source: "legacy",
 }));
 
-export const getCloudinaryGalleryImages = unstable_cache(async (): Promise<GalleryImage[]> => {
-  const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
-  const apiKey = process.env.CLOUDINARY_API_KEY;
-  const apiSecret = process.env.CLOUDINARY_API_SECRET;
-
-  if (!cloudName || !apiKey || !apiSecret) return [];
-
-  cloudinary.config({ cloud_name: cloudName, api_key: apiKey, api_secret: apiSecret, secure: true });
-  const { folder, lookup } = getCloudinaryFolder();
+async function listImages(getPage: (cursor?: string) => Promise<CloudinaryPage>): Promise<GalleryImage[]> {
   const images: GalleryImage[] = [];
   let nextCursor: string | undefined;
 
-  const addAssets = (assets: CloudinaryAsset[]) => {
-    for (const asset of assets) {
+  do {
+    const response = await getPage(nextCursor);
+    if (!Array.isArray(response.resources)) throw new Error("Cloudinary returned an invalid resource list.");
+    for (const asset of response.resources) {
       if (!asset.secure_url || !asset.asset_id) continue;
       images.push({
         id: asset.asset_id,
@@ -57,56 +56,77 @@ export const getCloudinaryGalleryImages = unstable_cache(async (): Promise<Galle
         source: "gallery",
       });
     }
-  };
-
-  const listByPrefix = async () => {
-    nextCursor = undefined;
-    do {
-      const response: CloudinaryPage = await cloudinary.api.resources({
-        resource_type: "image", type: "upload", prefix: `${folder}/`, max_results: 500, next_cursor: nextCursor,
-      });
-      addAssets(response.resources ?? []);
-      nextCursor = response.next_cursor;
-    } while (nextCursor);
-  };
-
-  if (lookup === "public-id-prefix") {
-    try {
-      await listByPrefix();
-    } catch {
-      return [];
-    }
-  } else try {
-    do {
-      const response: CloudinaryPage = await cloudinary.api.resources_by_asset_folder(folder, {
-        resource_type: "image", type: "upload", max_results: 500, next_cursor: nextCursor,
-      });
-      addAssets(response.resources ?? []);
-      nextCursor = response.next_cursor;
-    } while (nextCursor);
-  } catch {
-    // Legacy fixed-folder accounts (including older Free plans) do not support
-    // asset-folder listing. Their folder name is part of the public ID instead.
-    console.warn("Asset-folder lookup failed; trying public-ID prefix.");
-    try {
-      await listByPrefix();
-    } catch {
-      console.error("Cloudinary gallery request failed; serving legacy images.");
-      return [];
-    }
-  }
+    nextCursor = response.next_cursor;
+  } while (nextCursor);
 
   return images
     .filter((image, index, all) => all.findIndex(({ id }) => id === image.id) === index)
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
-}, ["cloudinary-gallery"], { revalidate: 300, tags: ["gallery-assets"] });
+}
+
+async function loadImages({ folder, lookup }: ReturnType<typeof getCloudinaryFolder>) {
+  if (lookup === "asset-folder") {
+    try {
+      return await listImages((next_cursor) => cloudinary.api.resources_by_asset_folder(folder, {
+        resource_type: "image", type: "upload", max_results: 500, next_cursor,
+      }));
+    } catch (error) {
+      // Cloudinary returns 404 for this endpoint in fixed folder mode. Check the
+      // account mode before trying a different lookup for an ambiguous 404.
+      const details = error && typeof error === "object" && "error" in error ? error.error : undefined;
+      if (!details || typeof details !== "object" || !("http_code" in details) || details.http_code !== 404) {
+        throw error;
+      }
+      const { settings } = await cloudinary.api.config({ settings: true });
+      if (settings?.folder_mode !== "fixed") throw error;
+    }
+  }
+
+  return listImages((next_cursor) => cloudinary.api.resources({
+    resource_type: "image", type: "upload", prefix: `${folder}/`, max_results: 500, next_cursor,
+  }));
+}
+
+const getCachedCloudinaryImages = unstable_cache(
+  async (cloudName: string, folder: ReturnType<typeof getCloudinaryFolder>) => {
+    try {
+      cloudinary.config({
+        cloud_name: cloudName,
+        api_key: process.env.CLOUDINARY_API_KEY,
+        api_secret: process.env.CLOUDINARY_API_SECRET,
+        secure: true,
+      });
+      return await loadImages(folder);
+    } catch {
+      // Next logs background refresh failures. Keep upstream details out of that log.
+      throw new Error("Cloudinary gallery request failed.");
+    }
+  },
+  ["cloudinary-gallery"],
+  { revalidate: 300, tags: ["gallery-assets"] },
+);
+
+export async function getCloudinaryCatalogue(): Promise<CloudinaryCatalogue> {
+  const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
+  if (!cloudName || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
+    return { images: [], status: "unconfigured" };
+  }
+
+  try {
+    const images = await getCachedCloudinaryImages(cloudName, getCloudinaryFolder());
+    return { images, status: "available" };
+  } catch {
+    console.error("Cloudinary catalogue unavailable.");
+    return { images: [], status: "unavailable" };
+  }
+}
 
 export function getLegacyImages() {
   return legacy;
 }
 
 export async function getGalleryCatalogue() {
-  const cloudImages = await getCloudinaryGalleryImages();
+  const { images: cloudImages } = await getCloudinaryCatalogue();
   const images = [...legacy, ...cloudImages].filter(
     (image, index, all) => all.findIndex(({ originalUrl }) => originalUrl === image.originalUrl) === index
   );

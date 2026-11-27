@@ -1,9 +1,9 @@
-import { getCloudinaryGalleryImages } from "@/lib/gallery-assets";
+import { getCloudinaryCatalogue } from "@/lib/gallery-assets";
 
 export const dynamic = "force-dynamic";
 
 export default async function GalleryPage() {
-  const images = await getCloudinaryGalleryImages();
+  const { images, status } = await getCloudinaryCatalogue();
 
   return (
     <main className="container" data-layout="list">
@@ -14,7 +14,7 @@ export default async function GalleryPage() {
             <a className="home-link" href="/">
               Home
             </a>
-            <p>Gallery: {images.length}</p>
+            <p>{status === "unavailable" ? "Gallery temporarily unavailable" : `Gallery: ${images.length}`}</p>
           </div>
         </header>
         <div className="list-content">
