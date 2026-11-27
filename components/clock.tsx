@@ -17,15 +17,16 @@ function getLocalTime() {
   return `${hours}:${minutes}`;
 }
 
-export function Clock({ fixedDigits = false }: { fixedDigits?: boolean }) {
+export function Clock({ layout, className }: { layout?: "digits" | "groups"; className?: string }) {
   const time = useSyncExternalStore(subscribeToClock, getLocalTime, () => "--:--");
-  if (fixedDigits) {
+  if (layout) {
+    const parts = layout === "digits" ? [...time] : [time.slice(0, 2), ":", time.slice(3)];
     return (
-      <time className="time-grid-time" dateTime={time === "--:--" ? undefined : time}>
-        <span className="time-grid-time-label">{time}</span>
-        <span className="time-grid-digits" aria-hidden="true">
-          {[...time].map((character, position) => (
-            <span key={position}>{character}</span>
+      <time className={className} dateTime={time === "--:--" ? undefined : time}>
+        <span className="clock-label">{time}</span>
+        <span className="clock-display" data-clock-layout={layout} aria-hidden="true">
+          {parts.map((part, position) => (
+            <span key={position}>{part}</span>
           ))}
         </span>
       </time>

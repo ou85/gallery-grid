@@ -15,6 +15,10 @@ a { color:var(--text_light); text-decoration:none; } a:visited { color:var(--tex
 @keyframes image-crossfade-in { from { opacity:0; transform:scale(1.05); } to { opacity:1; transform:scale(1); } }
 .clockpage { display:flex; flex-direction:column; justify-content:flex-end; margin:auto auto 1.5rem; max-width:31.25rem; min-width:6.25rem; height:10vh; text-align:center; font-size:2rem; padding:.3125rem; font-weight:bold; border-bottom:.1875rem solid var(--clock); animation:slide-in-top 1s forwards; }
 .clock { font-variant-numeric:tabular-nums; } #dayOfWeek { display:block; color:var(--text_light); font-weight:normal; font-size:1rem; margin-bottom:.5rem; }
+.clock-display { display:inline-grid; justify-items:center; font-variant-numeric:tabular-nums; }
+.clock-display[data-clock-layout="digits"] { grid-template-columns:repeat(2,.65em) .32em repeat(2,.65em); }
+.clock-display[data-clock-layout="groups"] { grid-template-columns:1.3em .32em 1.3em; }
+.clock-label { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
 #photo-grid { animation:fade-in 3s forwards; display:grid; grid-template-columns:repeat(3,300px); grid-gap:10px; margin-top:20px; }
 #photo-grid img { margin:-2.5px; width:300px; height:200px; object-fit:cover; background-color:var(--bg_main); }
 .cell { display:block; width:300px; height:200px; overflow:hidden; }
@@ -94,6 +98,10 @@ ul, li { list-style-type:none; }
 [data-layout="cloud"] { position:fixed; inset:0; top:0; left:0; transform:none; width:100%; height:100vh; height:100dvh; max-height:none; padding:24px 0; overflow-x:hidden; overflow-y:auto; align-items:center; }
 [data-layout="cloud"] > .cloud-content { width:max-content; max-width:100%; margin-top:auto; margin-bottom:auto; }
 [data-layout="cloud"] .clockpage { height:6.75rem; }
+.cloud-grid-clock { font-size:3.5rem; }
+@media (max-width:200px) {
+  .cloud-grid-clock { font-size:2.5rem; }
+}
 [data-layout="cloud"] #photo-grid { justify-content:center; grid-template-columns:repeat(4,300px); }
 .time-grid-card {
   position:relative;
@@ -114,9 +122,7 @@ ul, li { list-style-type:none; }
   .image-crossfade[data-time-grid-swap] > .image-transition-current { animation:none; }
   .time-grid-swap-card, .time-grid-swap-photo { display:none; }
 }
-.time-grid-time { font-size:clamp(1.5rem, 22cqi, 3.5rem); font-weight:700; font-variant-numeric:tabular-nums; line-height:1; }
-.time-grid-digits { display:grid; grid-template-columns:repeat(2,.65em) .32em repeat(2,.65em); justify-items:center; }
-.time-grid-time-label { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+.time-grid-time { font-size:clamp(1.5rem, 22cqi, 3.5rem); font-weight:700; line-height:1; }
 .time-grid-date {
   display:grid;
   place-content:center;

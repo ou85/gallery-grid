@@ -34,7 +34,7 @@ export function TimeGridCard({
 export function TimeGridCardFace({ card }: { card: TimeCard }) {
   return (
     <span className="time-grid-card-surface" data-card-face={card}>
-      {card === "time" ? <Clock fixedDigits /> : <CalendarDate />}
+      {card === "time" ? <Clock layout="digits" className="time-grid-time" /> : <CalendarDate />}
     </span>
   );
 }

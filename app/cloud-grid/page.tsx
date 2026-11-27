@@ -12,8 +12,8 @@ export default async function CloudGridPage() {
     <main className="container" data-layout="cloud">
       <div className="cloud-content">
         <div className="clockpage">
-          <a id="clock" href="/time-grid" style={{ fontSize: "3.5rem" }}>
-            <Clock />
+          <a id="clock" className="cloud-grid-clock" href="/time-grid">
+            <Clock layout="groups" />
           </a>
           <a id="dayOfWeek" href="/list">
             <DayOfWeek />
