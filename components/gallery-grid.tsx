@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useEffectEvent, useMemo, useRef, useState } from "react";
 import { GalleryRotation } from "@/components/image-deck";
 import { ImageCrossfade } from "@/components/image-crossfade";
-import { TimeGridCard } from "@/components/time-grid-card";
+import { TimeGridCard, TimeGridCardFace } from "@/components/time-grid-card";
 import { createTimeGridCells, moveTimeCard } from "@/components/time-grid-layout";
 import type { TimeCard, TimeGridCell } from "@/components/time-grid-layout";
 import type { GalleryImage } from "@/lib/gallery-assets";
@@ -17,7 +17,7 @@ type Props = {
   timeCards?: boolean;
 };
 
-type CardMove = { card: TimeCard; destination: number };
+type CardSwap = { card: TimeCard; photoSlot: number; nextCells: TimeGridCell[] };
 
 export function GalleryGrid({ images, size, twoColumnSize, refreshMs, thumbnail = false, timeCards = false }: Props) {
   const rotation = useRef<GalleryRotation | null>(null);
@@ -27,8 +27,7 @@ export function GalleryGrid({ images, size, twoColumnSize, refreshMs, thumbnail 
   });
   const [timeGrid, setTimeGrid] = useState<{
     cells: TimeGridCell[];
-    arrivingCard?: TimeCard;
-    departure?: CardMove;
+    swap?: CardSwap;
   }>({
     cells: ["time", "date"],
   });
@@ -68,24 +67,22 @@ export function GalleryGrid({ images, size, twoColumnSize, refreshMs, thumbnail 
     };
   }, [images, size, twoColumnSize, timeCards]);
 
-  const finishCardDeparture = useCallback((move: CardMove) => {
-    setTimeGrid((grid) => grid.departure === move
-      ? { cells: moveTimeCard(grid.cells, move.card, move.destination), arrivingCard: move.card }
-      : grid);
+  const finishCardSwap = useCallback((swap: CardSwap) => {
+    setTimeGrid((grid) => grid.swap === swap ? { cells: swap.nextCells } : grid);
   }, []);
 
-  const departure = timeGrid.departure;
+  const swap = timeGrid.swap;
   useEffect(() => {
-    if (!departure) return;
+    if (!swap) return;
     // Finish the swap even if the browser cancels the outgoing animation.
-    const timer = window.setTimeout(() => finishCardDeparture(departure), 850);
+    const timer = window.setTimeout(() => finishCardSwap(swap), 850);
     return () => window.clearTimeout(timer);
-  }, [departure, finishCardDeparture]);
+  }, [swap, finishCardSwap]);
 
   const tick = useEffectEvent(() => {
     if (document.hidden || document.querySelector("dialog.image-lightbox[open]")) return;
     const current = rotation.current;
-    if (!current || departure) return;
+    if (!current || swap) return;
     if (timeCards) {
       const { frames, pending } = current.snapshot();
       if (pending) return;
@@ -94,9 +91,14 @@ export function GalleryGrid({ images, size, twoColumnSize, refreshMs, thumbnail 
         const card = event < 0.2 ? "time" : "date";
         const destination = Math.random();
         const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        setTimeGrid(({ cells }) => reducedMotion
-          ? { cells: moveTimeCard(cells, card, destination) }
-          : { cells, departure: { card, destination } });
+        setTimeGrid((grid) => {
+          if (grid.swap) return grid;
+          const nextCells = moveTimeCard(grid.cells, card, destination);
+          const photoSlot = grid.cells[nextCells.indexOf(card)];
+          if (typeof photoSlot !== "number") return grid;
+          if (reducedMotion) return { cells: nextCells };
+          return { cells: grid.cells, swap: { card, photoSlot, nextCells } };
+        });
         return;
       }
     }
@@ -120,6 +122,11 @@ export function GalleryGrid({ images, size, twoColumnSize, refreshMs, thumbnail 
         alt="Gallery image"
         galleryModal
         onSettled={pending?.index === index ? onSettled : undefined}
+        swapOverlay={swap?.photoSlot === index ? (
+          <span className="time-grid-swap-card" aria-hidden="true">
+            <TimeGridCardFace card={swap.card} />
+          </span>
+        ) : undefined}
       />
     );
   };
@@ -127,13 +134,12 @@ export function GalleryGrid({ images, size, twoColumnSize, refreshMs, thumbnail 
   return (
     <div id="photo-grid" className={thumbnail ? "cloud-grid" : ""}>
       {timeCards
-        ? timeGrid.cells.map((cell, position) => typeof cell === "number" ? renderPhoto(cell) : (
+        ? timeGrid.cells.map((cell) => typeof cell === "number" ? renderPhoto(cell) : (
           <TimeGridCard
             key={cell}
             card={cell}
-            position={position}
-            arriving={timeGrid.arrivingCard === cell}
-            onDeparted={departure?.card === cell ? () => finishCardDeparture(departure) : undefined}
+            incomingPhoto={swap?.card === cell ? frames[swap.photoSlot]?.thumbnailUrl : undefined}
+            onSwapEnd={swap?.card === cell ? () => finishCardSwap(swap) : undefined}
           />
         ))
         : frames.map((_, index) => renderPhoto(index))}

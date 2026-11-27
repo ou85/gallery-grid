@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { AnimationEvent } from "react";
+import type { AnimationEvent, ReactNode } from "react";
 
 type ImageFrame = {
   src: string;
@@ -13,9 +13,10 @@ type Props = ImageFrame & {
   className: string;
   galleryModal?: boolean;
   onSettled?: (displayed: boolean) => void;
+  swapOverlay?: ReactNode;
 };
 
-export function ImageCrossfade({ src, href, alt, className, galleryModal = false, onSettled }: Props) {
+export function ImageCrossfade({ src, href, alt, className, galleryModal = false, onSettled, swapOverlay }: Props) {
   const [current, setCurrent] = useState<ImageFrame>(() => ({ src, href }));
   const [incoming, setIncoming] = useState<ImageFrame | null>(null);
   const [transitionStarted, setTransitionStarted] = useState(false);
@@ -82,7 +83,14 @@ export function ImageCrossfade({ src, href, alt, className, galleryModal = false
   };
 
   return (
-    <a className={className} href={incoming?.href ?? current.href} data-gallery-image={galleryModal ? "true" : undefined} target="_blank" rel="noreferrer">
+    <a
+      className={className}
+      href={incoming?.href ?? current.href}
+      data-gallery-image={galleryModal ? "true" : undefined}
+      data-time-grid-swap={swapOverlay ? "" : undefined}
+      target="_blank"
+      rel="noreferrer"
+    >
       <img
         className={`image-transition-layer ${incoming ? "image-transition-outgoing" : "image-transition-current"} ${transitionStarted ? "is-active" : ""}`}
         src={current.src}
@@ -97,6 +105,7 @@ export function ImageCrossfade({ src, href, alt, className, galleryModal = false
           onAnimationEnd={finishTransition}
         />
       )}
+      {swapOverlay}
     </a>
   );
 }
