@@ -1,10 +1,18 @@
-import { getCloudinaryGalleryImages, getGalleryImages } from "@/lib/gallery-assets";
+import { getGalleryCatalogue } from "@/lib/gallery-assets";
+import { paginateGallery } from "@/lib/gallery-pagination";
 import { RotationCount } from "@/components/rotation-count";
 
 export const dynamic = "force-dynamic";
 
-export default async function ListPage() {
-  const [images, cloudImages] = await Promise.all([getGalleryImages(), getCloudinaryGalleryImages()]);
+const listPageUrl = (page: number) => page === 1 ? "/list" : `/list?page=${page}`;
+
+export default async function ListPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string | string[] }>;
+}) {
+  const [{ images, cloudCount }, params] = await Promise.all([getGalleryCatalogue(), searchParams]);
+  const { page, totalPages, items } = paginateGallery(images, params.page);
 
   return (
     <main className="container" data-layout="list">
@@ -17,14 +25,14 @@ export default async function ListPage() {
               Back
             </a>
             <p>
-              {images.length} photos total (including {cloudImages.length} in{" "}
+              {images.length} photos total (including {cloudCount} in{" "}
               <a href="/gallery">Gallery</a>)
             </p>
           </div>
         </header>
         <div className="list-content">
           <div id="photo-grid">
-            {images.map((image) => (
+            {items.map((image) => (
               <a
                 key={image.id}
                 href={image.originalUrl}
@@ -36,6 +44,13 @@ export default async function ListPage() {
               </a>
             ))}
           </div>
+          {totalPages > 1 && (
+            <nav className="list-pagination" aria-label="Photo list pages">
+              {page > 1 && <a href={listPageUrl(page - 1)} rel="prev">Previous</a>}
+              <span aria-current="page">Page {page} of {totalPages}</span>
+              {page < totalPages && <a href={listPageUrl(page + 1)} rel="next">Next</a>}
+            </nav>
+          )}
           <div className="list-year">
             <h3>2026</h3>
           </div>

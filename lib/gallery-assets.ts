@@ -106,9 +106,14 @@ export function getLegacyImages() {
   return legacy;
 }
 
-export async function getGalleryImages() {
+export async function getGalleryCatalogue() {
   const cloudImages = await getCloudinaryGalleryImages();
-  return [...legacy, ...cloudImages].filter(
+  const images = [...legacy, ...cloudImages].filter(
     (image, index, all) => all.findIndex(({ originalUrl }) => originalUrl === image.originalUrl) === index
   );
+  return { images, cloudCount: cloudImages.length };
+}
+
+export async function getGalleryImages() {
+  return (await getGalleryCatalogue()).images;
 }

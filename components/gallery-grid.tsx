@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { ImageDeck } from "@/components/image-deck";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { GalleryRotation } from "@/components/image-deck";
 import { ImageCrossfade } from "@/components/image-crossfade";
 import type { GalleryImage } from "@/lib/gallery-assets";
 
@@ -14,8 +14,21 @@ type Props = {
 };
 
 export function GalleryGrid({ images, size, twoColumnSize, refreshMs, thumbnail = false }: Props) {
-  const deck = useRef<ImageDeck | null>(null);
-  const [visible, setVisible] = useState<GalleryImage[]>([]);
+  const rotation = useRef<GalleryRotation | null>(null);
+  const [{ frames, pending }, setSnapshot] = useState<ReturnType<GalleryRotation["snapshot"]>>({
+    frames: [],
+    pending: undefined,
+  });
+
+  const onSettled = useMemo(() => {
+    if (!pending) return undefined;
+    return (displayed: boolean) => {
+      const current = rotation.current;
+      if (current?.settle(pending, displayed, performance.now())) {
+        setSnapshot(current.snapshot());
+      }
+    };
+  }, [pending]);
 
   useEffect(() => {
     // Match the two-column range of the home grid in globals.css.
@@ -23,46 +36,35 @@ export function GalleryGrid({ images, size, twoColumnSize, refreshMs, thumbnail 
       ? undefined
       : window.matchMedia("(360px < width <= 640px)");
 
+    const current = new GalleryRotation(images);
+    rotation.current = current;
     const updateGrid = () => {
-      const nextDeck = new ImageDeck(images);
-      deck.current = nextDeck;
       const count = twoColumns?.matches ? twoColumnSize ?? size : size;
-      setVisible(Array.from({ length: Math.min(count, images.length) }, () => nextDeck.next()));
+      current.resize(Math.min(count, images.length), performance.now());
+      setSnapshot(current.snapshot());
     };
 
     console.log(`Images in rotation: ${images.length}`);
     updateGrid();
     twoColumns?.addEventListener("change", updateGrid);
-    return () => twoColumns?.removeEventListener("change", updateGrid);
+    return () => {
+      twoColumns?.removeEventListener("change", updateGrid);
+      rotation.current = null;
+    };
   }, [images, size, twoColumnSize]);
 
   useEffect(() => {
-    let lastIndex = -1;
     const timer = window.setInterval(() => {
       if (document.hidden || document.querySelector("dialog.image-lightbox[open]")) return;
-      setVisible((current) => {
-        if (!deck.current || current.length < 2) return current;
-
-        let index = Math.floor(Math.random() * current.length);
-        if (index === lastIndex) index = (index + 1) % current.length;
-        lastIndex = index;
-
-        const excludedIds = current
-          .filter((_, currentIndex) => currentIndex !== index)
-          .map(({ id }) => id);
-        const nextImage = deck.current.next(excludedIds);
-
-        return current.map((image, currentIndex) =>
-          currentIndex === index ? nextImage : image,
-        );
-      });
+      const current = rotation.current;
+      if (current?.advance(performance.now())) setSnapshot(current.snapshot());
     }, refreshMs);
     return () => window.clearInterval(timer);
   }, [refreshMs]);
 
   return (
     <div id="photo-grid" className={thumbnail ? "cloud-grid" : ""}>
-      {visible.map((image, index) => (
+      {frames.map((image, index) => (
         <ImageCrossfade
           key={index}
           className="cell image-crossfade"
@@ -70,6 +72,7 @@ export function GalleryGrid({ images, size, twoColumnSize, refreshMs, thumbnail 
           href={image.originalUrl}
           alt="Gallery image"
           galleryModal
+          onSettled={pending?.index === index ? onSettled : undefined}
         />
       ))}
     </div>

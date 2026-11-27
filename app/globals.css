@@ -120,6 +120,9 @@ ul, li { list-style-type:none; }
 [data-layout="list"] p, [data-layout="list"] h3 { color:var(--text_light); } [data-layout="list"] p { font-size:1.2rem; } [data-layout="list"] h3 { display:flex; justify-content:center; font-size:1.3rem; }
 [data-layout="list"] #photo-grid { animation:fade-in 3s forwards; display:grid; grid-template-columns:repeat(4,200px); grid-gap:10px; margin-top:20px; }
 [data-layout="list"] #photo-grid img { margin:-2.5px; width:200px; height:133px; object-fit:cover; background-position:center; }
+.list-pagination { display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:.75rem; margin:1.5rem 0; color:var(--text_light); }
+.list-pagination a { padding:.5rem .75rem; border:1px solid var(--clock); border-radius:.25rem; }
+.list-pagination a:hover, .list-pagination a:focus-visible { color:var(--clock); }
 .list-year { border-top:1px solid seashell; border-bottom:1px solid seashell; height:4rem; margin:1rem 0; }
 #error-message { color:palevioletred; text-align:center; width:100%; }
 @media (max-width:944px) {
