@@ -24,8 +24,10 @@ a { color:var(--text_light); text-decoration:none; } a:visited { color:var(--tex
 .image-crossfade > .image-transition-current { z-index:1; }
 .image-crossfade > .image-transition-outgoing { z-index:1; }
 .image-crossfade > .image-transition-incoming { z-index:2; opacity:0; transform:scale(1.05); }
-.image-crossfade > .image-transition-outgoing.is-active { animation:image-crossfade-out .7s ease-in forwards; }
-.image-crossfade > .image-transition-incoming.is-active { animation:image-crossfade-in .7s ease-in forwards; }
+.image-crossfade > .image-transition-outgoing.is-active,
+.time-grid-card-surface[data-departing] { animation:image-crossfade-out .7s ease-in forwards; }
+.image-crossfade > .image-transition-incoming.is-active,
+.time-grid-card-surface[data-arriving] { animation:image-crossfade-in .7s ease-in forwards; }
 .image-lightbox { width:min(96vw,1600px); max-width:96vw; max-height:96dvh; padding:1rem; border:1px solid var(--text_med); border-radius:8px; background:var(--bg_main); color:var(--text_light); }
 .image-lightbox::backdrop { background:rgba(0,0,0,.9); }
 .image-lightbox-content { display:flex; flex-direction:column; gap:.75rem; }
@@ -97,9 +99,14 @@ ul, li { list-style-type:none; }
   container-type:inline-size;
   text-align:center;
 }
-.time-grid-card[data-time-card="time"] { background:linear-gradient(135deg,#1c1035,#390f1d); }
-.time-grid-card[data-time-card="date"] { background:linear-gradient(135deg,#111631,#252052); }
+.time-grid-card-surface { display:grid; place-items:center; width:100%; height:100%; }
+.time-grid-card[data-time-card="time"] .time-grid-card-surface { background:linear-gradient(135deg,#1c1035,#390f1d); }
+.time-grid-card[data-time-card="date"] .time-grid-card-surface { background:linear-gradient(135deg,#111631,#252052); }
 .time-grid-card:focus-visible { outline:2px solid var(--text_light); outline-offset:-4px; }
+@media (prefers-reduced-motion: reduce) {
+  .time-grid-card-surface[data-arriving],
+  .time-grid-card-surface[data-departing] { animation:none; }
+}
 .time-grid-time { font-size:clamp(1.5rem, 22cqi, 3.5rem); font-weight:700; font-variant-numeric:tabular-nums; line-height:1; }
 .time-grid-date {
   display:grid;
